@@ -1,6 +1,6 @@
 function HomePage() {
   return (
-    <div>TillerFruits, Hmph.</div>
+    <div>TillerFruits, Hmph. </div>
   )
 }
 
