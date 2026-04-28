@@ -4,6 +4,7 @@ import type { UploadFileType } from "../types/types";
 import formatFileInput from "../utils/formatFileInput";
 import validateFile from "../utils/validateFile";
 import UploadButton from "./components/UploadButton";
+import Footer from "./components/Footer";
 
 function HomePage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -30,7 +31,7 @@ function HomePage() {
 
   console.log(addedFile);
   return (
-    <div className="flex flex-col items-center justify-center p-30">
+    <div className="flex flex-col min-h-[calc(100dvh-65px)] items-center justify-center">
       <UploadButton
         fileInputRef={fileInputRef}
         handleFileInput={handleFileInput}
@@ -50,6 +51,7 @@ function HomePage() {
           sx={{ fontSize: "1rem" }}
         >{`Filformater støttet per nå: ${acceptedFileFormats.join(", ")}`}</FormHelperText>
       )}
+      <Footer />
     </div>
   );
 }
