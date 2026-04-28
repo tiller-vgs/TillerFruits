@@ -1,15 +1,28 @@
 import type { UploadFileType } from "../types/types";
 
-function validateFile(file: UploadFileType) {
-  if (file.name.includes(".jpg")) {
+function validateFile(file: UploadFileType, acceptedFileFormats: string[]) {
+  const fileFormatValid = acceptedFileFormats.some((extension) =>
+    file.name.includes(extension),
+  );
+
+  const maxFileSize = 10 * 1024 * 1024;
+  const fileSizeValid = file.size <= maxFileSize;
+  if (!fileFormatValid) {
     return {
       success: false,
-      message: "Fileformat .jpg is not supported",
+      message:
+        "The fileformat is not supported. Please upload a file of the correct format.",
+    };
+  }
+  if (!fileSizeValid) {
+    return {
+      success: false,
+      message: "The file is too large.",
     };
   }
   return {
     success: true,
-    message: "file is okay",
+    message: "The file is supported.",
   };
 }
 
