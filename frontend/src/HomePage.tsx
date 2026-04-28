@@ -30,19 +30,27 @@ function HomePage() {
 
   console.log(addedFile);
   return (
-    <>
+    <div className="flex flex-col items-center justify-center p-30">
       <UploadButton
         fileInputRef={fileInputRef}
         handleFileInput={handleFileInput}
       />
-      {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
+      {errorMessage && (
+        <FormHelperText error={!!errorMessage} sx={{ fontSize: "1rem" }}>
+          {errorMessage}
+        </FormHelperText>
+      )}
 
       {!errorMessage && addedFile ? (
-        <FormHelperText>{`Filen ${addedFile.name} er lagt til`}</FormHelperText>
+        <FormHelperText
+          sx={{ fontSize: "1rem" }}
+        >{`Filen ${addedFile.name} er lagt til`}</FormHelperText>
       ) : (
-        <FormHelperText>{`Filformater støttet per nå: ${acceptedFileFormats.join(", ")}`}</FormHelperText>
+        <FormHelperText
+          sx={{ fontSize: "1rem" }}
+        >{`Filformater støttet per nå: ${acceptedFileFormats.join(", ")}`}</FormHelperText>
       )}
-    </>
+    </div>
   );
 }
 
