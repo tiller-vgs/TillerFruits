@@ -10,7 +10,11 @@ function UploadButton({ fileInputRef, handleFileInput }) {
         onChange={handleFileInput}
         multiple
       />
-      <Button variant="contained" onClick={() => fileInputRef.current.click()}>
+      <Button
+        sx={{ fontSize: "1.25rem", mb: "0.5rem"}}
+        variant="contained"
+        onClick={() => fileInputRef.current.click()}
+      >
         Upload files
       </Button>
     </>
