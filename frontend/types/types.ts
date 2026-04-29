@@ -1,4 +1,5 @@
-export type UploadFileType {
+export type UploadFileType = {
+  file: File
   name: string;
   lastModified: number;
   lastModifiedDate: Date;
