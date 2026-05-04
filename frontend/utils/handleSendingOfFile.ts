@@ -10,27 +10,36 @@ async function handleSendingOfFile({
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }) {
   if (!addedFile) {
-    setErrorMessage("No file selected");
+    setErrorMessage(
+      "Ingen fil valgt. Vennligst velg en fil før du laster opp.",
+    );
     return;
   }
-  setFileIsSubmitted(true);
-  setErrorMessage("");
 
   const formData = new FormData();
   formData.append("file", addedFile.file);
+
   try {
     const response = await fetch("http://localhost:3000/api/v1/upload", {
       method: "POST",
       body: formData,
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Upload failed");
+      setErrorMessage(
+        data.message || "Opplastingen mislyktes. Vennligst prøv igjen.",
+      );
+      return;
     }
 
     console.log("File submitted:", addedFile.file);
-  } catch (error) {
-    setErrorMessage("Something went wrong");
+    setErrorMessage("");
+    setFileIsSubmitted(true);
+  } catch (error: any) {
+    setErrorMessage(error.message || "En feil oppsto under opplastingen");
+    setFileIsSubmitted(false);
   }
 }
 
