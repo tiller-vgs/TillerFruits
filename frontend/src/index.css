@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@theme {
+  --color-bright-snow: #F6F7F8;
+  --color-bright-lemon: #F9E900;
+  --color-sage-green: #679436;
+  --color-coffee-bean: #1F1300;
+  --color-dusty-lavender: #6D5A72;
+}

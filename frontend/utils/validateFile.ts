@@ -11,18 +11,18 @@ function validateFile(file: UploadFileType, acceptedFileFormats: string[]) {
     return {
       success: false,
       message:
-        "The fileformat is not supported. Please upload a file of the correct format.",
+        "Filformatet støttes ikke. Vennligst last opp en fil i riktig format.",
     };
   }
   if (!fileSizeValid) {
     return {
       success: false,
-      message: "The file is too large.",
+      message: "Filen er for stor.",
     };
   }
   return {
     success: true,
-    message: "The file is supported.",
+    message: "Filen ble lagt til.",
   };
 }
 

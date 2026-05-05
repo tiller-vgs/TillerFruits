@@ -1,48 +1,64 @@
 import FormHelperText from "@mui/material/FormHelperText";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { UploadFileType } from "../types/types";
-import formatFileInput from "../utils/formatFileInput";
-import validateFile from "../utils/validateFile";
 import UploadButton from "./components/UploadButton";
+import Footer from "./components/Footer";
+import SubmitFileButton from "./components/SubmitFileButton";
 
 function HomePage() {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [addedFile, setAddedFile] = useState<UploadFileType>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [addedFile, setAddedFile] = useState<UploadFileType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [fileIsSubmitted, setFileIsSubmitted] = useState(false);
   const acceptedFileFormats: string[] = [".pdf", ".docx", ".txt"];
 
-  function handleFileInput(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0] || null;
-    if (!file) return;
-    const formattedFile = formatFileInput(file);
-    const fileValidationResult = validateFile(
-      formattedFile,
-      acceptedFileFormats,
-    );
-    if (fileValidationResult.success) {
-      setAddedFile(formattedFile);
-      setErrorMessage("");
-    } else {
-      setAddedFile(null);
-      setErrorMessage(fileValidationResult.message);
-    }
-  }
+  //runs whenever fileIsSubmitted changes, if fileIsSubmitted is true, it resets the addedFile and errorMessage states
+  useEffect(() => {
+    if (!fileIsSubmitted) return;
 
-  console.log(addedFile);
+    setAddedFile(null);
+    setErrorMessage("");
+  }, [fileIsSubmitted]);
+
   return (
-    <>
-      <UploadButton
-        fileInputRef={fileInputRef}
-        handleFileInput={handleFileInput}
-      />
-      {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
-
-      {!errorMessage && addedFile ? (
-        <FormHelperText>{`Filen ${addedFile.name} er lagt til`}</FormHelperText>
-      ) : (
-        <FormHelperText>{`Filformater støttet per nå: ${acceptedFileFormats.join(", ")}`}</FormHelperText>
+    <div className="flex flex-col min-h-[calc(100dvh-65px)] items-center justify-center">
+      <div className="flex flex-row gap-5 justify-center items-center">
+        <UploadButton
+          fileInputRef={fileInputRef}
+          acceptedFileFormats={acceptedFileFormats}
+          setAddedFile={setAddedFile}
+          setErrorMessage={setErrorMessage}
+          setFileIsSubmitted={setFileIsSubmitted}
+        />
+        {addedFile && (
+          <SubmitFileButton
+            addedFile={addedFile}
+            setFileIsSubmitted={setFileIsSubmitted}
+            setErrorMessage={setErrorMessage}
+          />
+        )}
+      </div>
+      {errorMessage && (
+        <FormHelperText error={!!errorMessage} sx={{ fontSize: "1rem" }}>
+          {errorMessage}
+        </FormHelperText>
       )}
-    </>
+
+      {fileIsSubmitted ? (
+        <FormHelperText sx={{ fontSize: "1rem" }}>
+          Filen er sendt
+        </FormHelperText>
+      ) : addedFile && errorMessage === "" ? (
+        <FormHelperText sx={{ fontSize: "1rem" }}>
+          {`Filen ${addedFile.name} er lagt til`}
+        </FormHelperText>
+      ) : (
+        <FormHelperText sx={{ fontSize: "1rem" }}>
+          {`Filformater støttet per nå: ${acceptedFileFormats.join(", ")}`}
+        </FormHelperText>
+      )}
+      <Footer />
+    </div>
   );
 }
 
