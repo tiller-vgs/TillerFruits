@@ -21,6 +21,12 @@ export default function Navbar() {
           </NavLink>
           <div className="flex gap-2">
             <NavLink
+              to="/home"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <Button color="inherit">Home</Button>
+            </NavLink>
+            <NavLink
               to="/login"
               style={{ color: "inherit", textDecoration: "none" }}
             >

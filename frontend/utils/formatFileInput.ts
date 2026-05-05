@@ -2,6 +2,7 @@ import type { UploadFileType } from "../types/types";
 
 export default function formatFileInput(file: File): UploadFileType {
   return {
+    file,
     name: file.name,
     lastModified: file.lastModified,
     lastModifiedDate: new Date(file.lastModified),
