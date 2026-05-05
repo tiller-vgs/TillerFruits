@@ -9,7 +9,7 @@ import LandingPage from "./landingPage";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-    <Navbar />
+      <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<HomePage />} />
