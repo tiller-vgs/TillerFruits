@@ -1,14 +1,12 @@
 import express from "express";
-<<<<<<< Updated upstream
-import { pool } from "./db";
-=======
 import { Pool } from "pg";
->>>>>>> Stashed changes
+import { auth } from "./lib/auth";
 
 const app = express();
 const PORT = 5000;
 
 app.use(express.json());
+app.use("/api/auth", auth.handler);
 
 const pool = new Pool({
   host: "localhost",
@@ -17,8 +15,7 @@ const pool = new Pool({
   password: "1234",
   database: "mydb",
 });
-
-// тест
+//test
 app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
