@@ -18,7 +18,7 @@ const pool = new Pool({
   password: "1234",
   database: "mydb",
 });
-
+//test
 app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
