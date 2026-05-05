@@ -1,22 +1,15 @@
 import express from "express";
-import { pool } from "./db";
 import { Pool } from "pg";
+import cors from "cors";
+import multer from "multer";
+import uploadFile from "./utils/uploadFile";
 
 const app = express();
 const PORT = 5000;
 
-import cors from "cors";
-import multer from "multer";
-import fs from "fs/promises";
-import uploadFile from "./utils/uploadFile";
-
-const app = express();
-const PORT = 3000;
 app.use(cors());
-const upload = multer({ storage: multer.memoryStorage() });
-
-
 app.use(express.json());
+const upload = multer({ storage: multer.memoryStorage() });
 
 const pool = new Pool({
   host: "localhost",
@@ -30,20 +23,6 @@ app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
 
-app.get("/users", async (req, res) => {
-  const result = await pool.query("SELECT * FROM users");
-  res.json(result.rows);
-});
-
-app.post("/users", async (req, res) => {
-  const { email, password } = req.body;
-
-  await pool.query("INSERT INTO users (email, password) VALUES ($1, $2)", [
-    email,
-    password,
-  ]);
-
-  res.send("ok");
 app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     console.log("File doesnt exist or wasnt uploaded.");
@@ -66,9 +45,7 @@ app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-app.get("/api/v1/uploads", (req, res) => {
-
-});
+app.get("/api/v1/upload", (req, res) => {});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
