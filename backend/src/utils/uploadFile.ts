@@ -23,7 +23,6 @@ export default async function uploadFile(
     mimeFileExtension && acceptedMimeTypes.includes(mimeFileExtension.mime);
 
   // Her skal jeg validere tekstfiler, akkurat nå er .txt en WEAKPOINT. OBS.
-
   const isFileTxt = fileExtension === "txt";
 
   // Validering av filstørrelse og format
@@ -47,9 +46,9 @@ export default async function uploadFile(
     throw new Error(
       "Filformatene matcher ikke. Vennligst last opp en fil i filformatene som støttes",
     );
-  } else {
-    console.log("Filen er validert og kan lastes opp.");
   }
+
+  console.log("Filen er validert og kan lastes opp.");
 
   const randomFilename = randomBytes(32).toString("hex");
   if (!isFileTxt && !mimeFileExtension) {
@@ -57,6 +56,4 @@ export default async function uploadFile(
   }
   const extension = isFileTxt ? "txt" : mimeFileExtension?.ext;
   const secureFilename = `${randomFilename}.${extension}`;
-  console.log(`Original filename: ${originalFilename}`);
-  console.log(`Secure filename: ${secureFilename}`);
 }

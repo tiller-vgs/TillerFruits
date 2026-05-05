@@ -1,5 +1,5 @@
 import FormHelperText from "@mui/material/FormHelperText";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { UploadFileType } from "../types/types";
 import UploadButton from "./components/UploadButton";
 import Footer from "./components/Footer";
@@ -12,11 +12,13 @@ function HomePage() {
   const [fileIsSubmitted, setFileIsSubmitted] = useState(false);
   const acceptedFileFormats: string[] = [".pdf", ".docx", ".txt"];
 
-  if (fileIsSubmitted) {
+  //runs whenever fileIsSubmitted changes, if fileIsSubmitted is true, it resets the addedFile and errorMessage states
+  useEffect(() => {
+    if (!fileIsSubmitted) return;
+
     setAddedFile(null);
     setErrorMessage("");
-    setFileIsSubmitted(false);
-  }
+  }, [fileIsSubmitted]);
 
   return (
     <div className="flex flex-col min-h-[calc(100dvh-65px)] items-center justify-center">
@@ -46,7 +48,7 @@ function HomePage() {
         <FormHelperText sx={{ fontSize: "1rem" }}>
           Filen er sendt
         </FormHelperText>
-      ) : addedFile ? (
+      ) : addedFile && errorMessage === "" ? (
         <FormHelperText sx={{ fontSize: "1rem" }}>
           {`Filen ${addedFile.name} er lagt til`}
         </FormHelperText>

@@ -13,19 +13,31 @@ app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
 
-// fs.writeFile("")
-
-app.post("/api/v1/upload", upload.single("file"), (req, res) => {
+app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     console.log("File doesnt exist or wasnt uploaded.");
     return res.status(400).send("File doesnt exist or wasnt uploaded.");
   }
 
-  const { buffer, originalname } = req.file;
-  uploadFile(buffer, originalname);
+  try {
+    const { buffer, originalname } = req.file;
+    await uploadFile(buffer, originalname);
+
+    res.status(200).json({
+      success: true,
+      message: "File uploaded successfully",
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
-app.get("/api/v1/uploads", (req, res) => {});
+app.get("/api/v1/uploads", (req, res) => {
+
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
