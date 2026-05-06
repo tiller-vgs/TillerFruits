@@ -22,7 +22,7 @@ function HomePage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100dvh-65px)] items-center justify-center">
-      <div className="flex flex-row gap-5 justify-center items-center">
+      <div className="flex flex-row gap-5 justify-center items-center mt-30">
         <UploadButton
           fileInputRef={fileInputRef}
           acceptedFileFormats={acceptedFileFormats}

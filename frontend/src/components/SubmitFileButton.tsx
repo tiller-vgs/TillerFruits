@@ -14,12 +14,25 @@ function SubmitFileButton({
   return (
     <Button
       variant="outlined"
-      sx={{ height: "0" }}
-      onClick={() => handleSendingOfFile({ addedFile, setFileIsSubmitted, setErrorMessage })}
+      sx={{mt: "1rem",
+          fontSize: "1.1rem",
+          mb: "0.5rem",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "10px",
+          textTransform: "none", 
+          backgroundColor: "#1F1300",
+          color: "#F6F7F8",
+          transition: "0.2s ease",
+          ":hover": {backgroundColor: "#6D5A72",
+          transform: "translateY(-2px)"
+    }
+  }}
+
+        onClick={() => handleSendingOfFile({ addedFile, setFileIsSubmitted, setErrorMessage })}
     >
       Submit
     </Button>
   );
 }
 
-export default SubmitFileButton;
+export default SubmitFileButton
