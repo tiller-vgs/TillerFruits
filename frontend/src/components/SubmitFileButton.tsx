@@ -1,14 +1,14 @@
 import Button from "@mui/material/Button";
-import type { UploadFileType } from "../../types/types";
+import type { UploadFileType, UploadStatus } from "../../types/types";
 import handleSendingOfFile from "../../utils/handleSendingOfFile";
 
 function SubmitFileButton({
   addedFile,
-  setFileIsSubmitted,
+  setUploadStatus,
   setErrorMessage,
 }: {
   addedFile: UploadFileType;
-  setFileIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+  setUploadStatus: React.Dispatch<React.SetStateAction<UploadStatus>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
@@ -28,7 +28,7 @@ function SubmitFileButton({
     }
   }}
 
-        onClick={() => handleSendingOfFile({ addedFile, setFileIsSubmitted, setErrorMessage })}
+        onClick={() => handleSendingOfFile({ addedFile, setUploadStatus, setErrorMessage })}
     >
       Submit
     </Button>
