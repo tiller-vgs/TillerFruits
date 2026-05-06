@@ -12,7 +12,6 @@ function HomePage() {
   const [fileIsSubmitted, setFileIsSubmitted] = useState(false);
   const acceptedFileFormats: string[] = [".pdf", ".docx", ".txt"];
 
-  //runs whenever fileIsSubmitted changes, if fileIsSubmitted is true, it resets the addedFile and errorMessage states
   useEffect(() => {
     if (!fileIsSubmitted) return;
 
