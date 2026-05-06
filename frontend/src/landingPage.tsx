@@ -63,10 +63,8 @@ export default function LandingPage() {
   return (
     <div className="bg-bright-snow min-h-screen overflow-x-hidden">
 
-      {/* ── Hero ── */}
       <div className="relative flex flex-col items-center justify-center min-h-[calc(100vh-65px)] px-6 text-center overflow-hidden">
 
-        {/* Floating decorative fruits */}
         <span className="absolute top-[10%] left-[6%] text-6xl animate-float pointer-events-none select-none opacity-30">🍋</span>
         <span className="absolute top-[22%] right-[8%] text-5xl animate-float-slow pointer-events-none select-none opacity-25">🌿</span>
         <span className="absolute bottom-[20%] left-[10%] text-4xl animate-float-slow pointer-events-none select-none opacity-20">🍃</span>
@@ -105,7 +103,6 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Wave transition to white */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none">
           <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-12 block">
             <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#ffffff" />
@@ -113,7 +110,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ── Features ── */}
       <div ref={featuresReveal.ref} className="bg-white px-6 py-20">
         <div className="max-w-5xl mx-auto">
           <div
@@ -148,7 +144,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ── How it works ── */}
       <div ref={stepsReveal.ref} className="px-6 py-24" style={{ background: 'var(--color-coffee-bean)' }}>
         <div className="max-w-4xl mx-auto">
           <h2
@@ -186,7 +181,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ── For students / For teachers ── */}
       <div ref={splitReveal.ref} className="bg-white px-6 py-20">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div
@@ -238,7 +232,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ── CTA ── */}
       <div ref={ctaReveal.ref} className="py-28 px-6 text-center bg-bright-snow">
         <div
           className="max-w-xl mx-auto transition-all duration-700"
