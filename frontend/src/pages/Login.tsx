@@ -1,5 +1,5 @@
-import Button from "@mui/material/Button";
 import { authClient } from "../../utils/auth-client";
+import LoginCard from "../components/LoginCard";
 function Login() {
   const handleSignIn = async () => {
     await authClient.signIn.social({
@@ -9,9 +9,9 @@ function Login() {
   };
 
   return (
-    <Button variant="contained" onClick={handleSignIn}>
-      Login fra Github
-    </Button>
+    <div className="min-h-[calc(100dvh-65px)] justify-center py-35 flex bg-var(--color-bright-snow) px-2">
+      <LoginCard handleSignIn={handleSignIn} />
+    </div>
   );
 }
 

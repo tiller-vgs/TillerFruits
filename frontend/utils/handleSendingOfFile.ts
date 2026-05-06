@@ -38,7 +38,11 @@ async function handleSendingOfFile({
     setErrorMessage("");
     setFileIsSubmitted(true);
   } catch (error: any) {
-    setErrorMessage(error.message || "En feil oppsto under opplastingen");
+    setErrorMessage(
+      error.message === "Failed to fetch"
+        ? "En feil oppsto under opplastingen.\nVennligst oppdater siden eller ta kontakt med support hvis problemet fortsetter."
+        : error.message,
+    );
     setFileIsSubmitted(false);
   }
 }

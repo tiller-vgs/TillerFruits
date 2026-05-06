@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -22,6 +23,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  files         File[]
 
   @@unique([email])
   @@map("user")
@@ -73,4 +75,29 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model File {
+  id        Int   @id @default(autoincrement())
+  /// for admins only in case of tracking down who uploaded what, not for user facing features. 
+  /// NEVER use in frontend, only for backend queries. Use displayName for frontend.
+  creatorId   String 
+  /// refernce to the user that uploaded the file for easier querying
+  creator     User @relation(fields: [creatorId], references: [id]) 
+  ///anonymous and regenerates for each new upload even if its the same user.
+  displayName String 
+
+  originalName String
+  savedName    String
+
+  mimeType    String
+  extension   String
+
+  fileSize    Int
+  filehash    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([creatorId])
 }

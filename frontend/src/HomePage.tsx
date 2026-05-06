@@ -21,7 +21,7 @@ function HomePage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100dvh-65px)] items-center justify-center">
-      <div className="flex flex-row gap-5 justify-center items-center">
+      <div className="flex flex-row gap-5 justify-center items-center mt-30">
         <UploadButton
           fileInputRef={fileInputRef}
           acceptedFileFormats={acceptedFileFormats}
@@ -38,7 +38,7 @@ function HomePage() {
         )}
       </div>
       {errorMessage && (
-        <FormHelperText error={!!errorMessage} sx={{ fontSize: "1rem" }}>
+        <FormHelperText error={!!errorMessage} sx={{ fontSize: "1rem", whiteSpace: "pre-line", textAlign: "center", padding: "0" }}>
           {errorMessage}
         </FormHelperText>
       )}
