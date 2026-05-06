@@ -1,7 +1,47 @@
+import React from "react";
 import Button from "@mui/material/Button";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import formatFileInput from "../../utils/formatFileInput";
+import validateFile from "../../utils/validateFile";
+import type { UploadFileType } from "../../types/types";
 
-function UploadButton({ fileInputRef, handleFileInput }) {
+interface UploadButtonProps {
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
+  acceptedFileFormats: string[];
+  setAddedFile: React.Dispatch<React.SetStateAction<UploadFileType | null>>;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+  setFileIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function UploadButton({
+  fileInputRef,
+  acceptedFileFormats,
+  setAddedFile,
+  setErrorMessage,
+  setFileIsSubmitted,
+}: UploadButtonProps) {
+  function handleFileInput(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] || null;
+    if (!file) return;
+    const formattedFile = formatFileInput(file);
+    const fileValidationResult = validateFile(
+      formattedFile,
+      acceptedFileFormats,
+    );
+    if (fileValidationResult.success) {
+      setAddedFile(formattedFile);
+      setErrorMessage("");
+    } else {
+      setAddedFile(null);
+      setErrorMessage(fileValidationResult.message);
+    }
+  }
+
+  function handleFileButtonClick() {
+    fileInputRef.current?.click();
+    setFileIsSubmitted(false);
+  }
+
   return (
     <>
       <input
@@ -13,7 +53,9 @@ function UploadButton({ fileInputRef, handleFileInput }) {
 
       />
       <Button
+      variant="contained"
       startIcon={<FileUploadIcon sx={{ fontSize: "4rem", color: "#ffffff", }} />}
+      onClick={handleFileButtonClick}
         sx={{mt: "1rem",
           fontSize: "1.1rem",
           mb: "0.5rem",
@@ -28,8 +70,6 @@ function UploadButton({ fileInputRef, handleFileInput }) {
     }
   }}
 
-        variant="contained"
-        onClick={() => fileInputRef.current.click()}
       >
         Upload files
       </Button>
