@@ -10,7 +10,7 @@ function HomePage() {
   const [addedFile, setAddedFile] = useState<UploadFileType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
-  const acceptedFileFormats: string[] = [".pdf", ".docx", ".txt"];
+  const acceptedFileFormats: string[] = [".pdf", ".docx"];
 
   useEffect(() => {
     if (uploadStatus !== "success") return;
