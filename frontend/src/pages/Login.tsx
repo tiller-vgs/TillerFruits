@@ -1,4 +1,4 @@
-import { authClient } from "../../utils/auth-client";
+import { authClient } from "../utils/auth-client";
 import LoginCard from "../components/LoginCard";
 function Login() {
   const handleSignIn = async () => {
