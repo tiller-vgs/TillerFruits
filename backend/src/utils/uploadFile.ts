@@ -5,6 +5,7 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import generateRandomDisplayName from "./generateRandomDisplayName";
 
+
 export default async function uploadFile(
   buffer: Buffer,
   originalFilename: string,
@@ -37,6 +38,12 @@ export default async function uploadFile(
   } else if (buffer.length < minFileSize) {
     throw new Error(
       `Filen er for liten. Minimum tillatt størrelse er ${minFileSize / 1024}KB.`,
+    );
+  }
+
+  if (originalFilename.match(/[^a-zA-Z0-9\s.,!?-]/g)) {
+    throw new Error(
+      "Filnavnet inneholder ugyldige tegn. Vennligst bruk kun engelske bokstaver, tall og vanlige skilletegn.",
     );
   }
 
