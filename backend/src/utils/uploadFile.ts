@@ -4,7 +4,9 @@ import { existsSync } from "fs";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import generateRandomDisplayName from "./generateRandomDisplayName";
-
+import { prisma } from "../lib/db";
+import { File } from "../generated/prisma/browser";
+import { User } from "better-auth";
 
 export default async function uploadFile(
   buffer: Buffer,
@@ -15,7 +17,7 @@ export default async function uploadFile(
   const acceptedFileFormatsInFileName: string[] = ["pdf", "docx"];
 
   const savingDir = join(process.cwd(), "uploads");
-  const displayName = generateRandomDisplayName();
+  const displayName = await generateRandomDisplayName();
 
   const fileExtension = originalFilename.toLowerCase().split(".").pop();
   const fileFormatValid = acceptedFileFormatsInFileName.includes(
@@ -68,6 +70,33 @@ export default async function uploadFile(
 
   const secureFilename = `${randomFilename}.${mimeFileExtension?.ext}`;
   const fileHash = createHash("sha256").update(buffer).digest("hex");
+
+  //REPLACE WITH LOGGED IN USER
+  const testUserUpload: User = await prisma.user.create({
+    data: {
+      id: "user1",
+      name: "noah",
+      email: "noah@example.com",
+      emailVerified: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+
+  const uploadingFile: File = await prisma.file.create({
+    data: {
+      creatorId: testUserUpload.id,
+      displayName: displayName,
+      originalName: originalFilename,
+      savedName: secureFilename,
+      mimeType: mimeFileExtension?.mime || "",
+      extension: mimeFileExtension?.ext || "",
+      fileSize: buffer.length,
+      filehash: fileHash,
+    },
+  });
+
+  console.log(uploadingFile);
 
   try {
     if (!existsSync(savingDir)) {
