@@ -1,4 +1,4 @@
-import type { UploadFileType, UploadStatus } from "../types/types";
+import type { UploadFileType, UploadStatus } from "../../types/types";
 
 async function handleSendingOfFile({
   addedFile,
@@ -20,7 +20,7 @@ async function handleSendingOfFile({
   formData.append("file", addedFile.file);
 
   try {
-    const response = await fetch("http://localhost:5000/api/v1/upload", {
+    const response = await fetch("http://localhost:5000/api/v1/files/upload", {
       method: "POST",
       body: formData,
     });

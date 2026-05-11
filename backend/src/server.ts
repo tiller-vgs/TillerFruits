@@ -3,6 +3,8 @@ import { Pool } from "pg";
 import cors from "cors";
 import multer from "multer";
 import uploadFile from "./utils/uploadFile";
+import { getFiles } from "./utils/dbHelper";
+import assignStudentsToReviewFile from "./utils/assignStudents";
 
 const app = express();
 const PORT = 5000;
@@ -23,7 +25,8 @@ app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
 
-app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
+// endpoint for file upload (student)
+app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     console.log("File doesnt exist or wasnt uploaded.");
     return res.status(400).send("File doesnt exist or wasnt uploaded.");
@@ -45,7 +48,57 @@ app.post("/api/v1/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-app.get("/api/v1/upload", (req, res) => {});
+// endpoint for fetching ALL uploaded files (teacher)
+app.get("/api/v1/files", (req, res) => {
+  const allFiles = getFiles();
+  const frontendSafeFiles = allFiles.map((file) => ({
+    id: file.id,
+    originalName: file.originalName,
+    displayName: file.displayName,
+    extension: file.extension,
+    createdAt: file.createdAt,
+  }));
+  res.status(200).json({
+    success: true,
+    data: frontendSafeFiles,
+  });
+});
+
+// endpoint for fetching a specific file by id (teacher)
+app.get("/api/v1/files/:id", (req, res) => {
+  const id = req.params.id;
+  const allFiles = getFiles();
+  const file = allFiles.find((file) => file.id === Number(id));
+  if (!file) {
+    return res.status(404).json({
+      success: false,
+      message: "File not found",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    data: file,
+  });
+});
+
+// endpoint for sending a file to random students (teacher)
+app.post("/api/v1/files/:id/distribute", (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const assigningResult = assignStudentsToReviewFile(id);
+
+    res.status(200).json({
+      success: true,
+      data: assigningResult,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
