@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,29 +5,27 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
   id            String    @id
   name          String
-  email         String
+  email         String    @unique
   emailVerified Boolean   @default(false)
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
   files         File[]
+  accounts      Account[]
+  sessions      Session[]
 
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
@@ -40,7 +33,6 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@index([userId])
   @@map("session")
 }
@@ -50,7 +42,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -60,6 +51,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("account")
@@ -78,26 +70,21 @@ model Verification {
 }
 
 model File {
-  id        Int   @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   /// for admins only in case of tracking down who uploaded what, not for user facing features. 
   /// NEVER use in frontend, only for backend queries. Use displayName for frontend.
-  creatorId   String 
-  /// refernce to the user that uploaded the file for easier querying
-  creator     User @relation(fields: [creatorId], references: [id]) 
-  ///anonymous and regenerates for each new upload even if its the same user.
-  displayName String 
-
+  creatorId    String
+  /// anonymous and regenerates for each new upload even if its the same user.
+  displayName  String
   originalName String
   savedName    String
-
-  mimeType    String
-  extension   String
-
-  fileSize    Int
-  filehash    String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  mimeType     String
+  extension    String
+  fileSize     Int
+  filehash     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  creator      User     @relation(fields: [creatorId], references: [id])
 
   @@index([creatorId])
 }
