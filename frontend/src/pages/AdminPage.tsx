@@ -1,5 +1,9 @@
+import FileCard from "../components/FileList"
+
 function AdminPage() {
-  return <div>AdminPage</div>;
+  return (
+    <FileCard />
+  )
 }
 
-export default AdminPage;
+export default AdminPage
