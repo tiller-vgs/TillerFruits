@@ -4,8 +4,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
+import { authClient } from "../utils/auth-client";
+import DarkModeButton from "./darkModeButton";
 
 export default function Navbar() {
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    window.location.href = "/";
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ bgcolor: "#679436" }}>
@@ -19,7 +25,7 @@ export default function Navbar() {
               TillerFruits
             </Typography>
           </NavLink>
-          <div className="flex gap-2">
+          <div className="flex gap-5 min-w-1/3 justify-end items-center">
             <NavLink
               to="/home"
               style={{ color: "inherit", textDecoration: "none" }}
@@ -32,9 +38,17 @@ export default function Navbar() {
             >
               <Button color="inherit">Login</Button>
             </NavLink>
+
+            <Button color="inherit" onClick={handleSignOut}>
+              Sign Out
+            </Button>
+            
             <NavLink to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
               <Button color="inherit">Sign Up</Button>
             </NavLink>
+        
+              <DarkModeButton />
+              
           </div>
         </Toolbar>
       </AppBar>
