@@ -4,10 +4,8 @@ import type { UploadFileType, UploadStatus } from "../types/types";
 import UploadButton from "./components/UploadButton";
 import Footer from "./components/Footer";
 import SubmitFileButton from "./components/SubmitFileButton";
-import { authClient } from "./utils/auth-client";
 
 function HomePage() {
-  const { data: session } = authClient.useSession();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [addedFile, setAddedFile] = useState<UploadFileType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -23,11 +21,6 @@ function HomePage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100dvh-65px)] items-center justify-center">
-      {session?.user && (
-        <p className="text-sm text-gray-500">
-          Logged in as: {session.user.name} ({session.user.email})
-        </p>
-      )}
       <div className="flex flex-row gap-5 justify-center items-center mt-30">
         <UploadButton
           fileInputRef={fileInputRef}
