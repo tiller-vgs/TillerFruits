@@ -1,0 +1,51 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "hiddenName": "noah",
+      "email": "noah@example.com",
+      "emailVerified": true,
+      "createdAt": "2024-06-01T12:00:00Z",
+      "updatedAt": "2024-06-01T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "hiddenName": "frank",
+      "email": "frank@example.com",
+      "emailVerified": true,
+      "createdAt": "2024-06-01T12:00:00Z",
+      "updatedAt": "2024-06-01T12:00:00Z"
+    },
+    {
+      "id": 3,
+      "hiddenName": "donnie",
+      "email": "donnie@example.com",
+      "emailVerified": true,
+      "createdAt": "2024-06-01T12:00:00Z",
+      "updatedAt": "2024-06-01T12:00:00Z"
+    },
+    {
+      "id": 4,
+      "hiddenName": "gretchen",
+      "email": "gretchen@example.com",
+      "emailVerified": true,
+      "createdAt": "2024-06-01T12:00:00Z",
+      "updatedAt": "2024-06-01T12:00:00Z"
+    }
+  ],
+  "files": [
+    {
+      "id": 0,
+      "creatorId": "user1",
+      "displayName": "sur-dirrende-bringebær",
+      "originalName": "Medbestemmelse .docx",
+      "savedName": "d4c426bf1ffb978b043e055991388c9b857a5a861acd9c46da3936c139b4d303.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "extension": "docx",
+      "fileSize": 16288,
+      "filehash": "67e9880f1b07677df5de249b663eebe3d64da52256893c8b724801b24623527d",
+      "createdAt": "2026-05-09T16:29:26.199Z",
+      "updatedAt": "2026-05-09T16:29:26.199Z"
+    }
+  ]
+}

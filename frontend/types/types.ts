@@ -6,3 +6,5 @@ export type UploadFileType = {
   size: number;
   type: string;
 }
+
+export type UploadStatus = "idle" | "success" | "error";

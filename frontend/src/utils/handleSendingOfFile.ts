@@ -1,12 +1,12 @@
-import type { UploadFileType } from "../types/types";
+import type { UploadFileType, UploadStatus } from "../../types/types";
 
 async function handleSendingOfFile({
   addedFile,
-  setFileIsSubmitted,
+  setUploadStatus,
   setErrorMessage,
 }: {
   addedFile: UploadFileType;
-  setFileIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+  setUploadStatus: React.Dispatch<React.SetStateAction<UploadStatus>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }) {
   if (!addedFile) {
@@ -20,7 +20,7 @@ async function handleSendingOfFile({
   formData.append("file", addedFile.file);
 
   try {
-    const response = await fetch("http://localhost:3000/api/v1/upload", {
+    const response = await fetch("http://localhost:5000/api/v1/files/upload", {
       method: "POST",
       body: formData,
     });
@@ -36,10 +36,14 @@ async function handleSendingOfFile({
 
     console.log("File submitted:", addedFile.file);
     setErrorMessage("");
-    setFileIsSubmitted(true);
+    setUploadStatus("success");
   } catch (error: any) {
-    setErrorMessage(error.message || "En feil oppsto under opplastingen");
-    setFileIsSubmitted(false);
+    setErrorMessage(
+      error.message === "Failed to fetch"
+        ? "En feil oppsto under opplastingen.\nVennligst oppdater siden eller ta kontakt med support hvis problemet fortsetter."
+        : error.message,
+    );
+    setUploadStatus("idle");
   }
 }
 

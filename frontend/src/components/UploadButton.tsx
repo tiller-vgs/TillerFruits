@@ -1,15 +1,16 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import formatFileInput from "../../utils/formatFileInput";
-import validateFile from "../../utils/validateFile";
-import type { UploadFileType } from "../../types/types";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import formatFileInput from "../utils/formatFileInput";
+import validateFile from "../utils/validateFile";
+import type { UploadFileType, UploadStatus } from "../../types/types";
 
 interface UploadButtonProps {
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   acceptedFileFormats: string[];
   setAddedFile: React.Dispatch<React.SetStateAction<UploadFileType | null>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-  setFileIsSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+  setUploadStatus: React.Dispatch<React.SetStateAction<UploadStatus>>;
 }
 
 function UploadButton({
@@ -17,7 +18,7 @@ function UploadButton({
   acceptedFileFormats,
   setAddedFile,
   setErrorMessage,
-  setFileIsSubmitted,
+  setUploadStatus,
 }: UploadButtonProps) {
   function handleFileInput(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0] || null;
@@ -34,11 +35,12 @@ function UploadButton({
       setAddedFile(null);
       setErrorMessage(fileValidationResult.message);
     }
+    event.target.value = "";
   }
 
   function handleFileButtonClick() {
     fileInputRef.current?.click();
-    setFileIsSubmitted(false);
+    setUploadStatus("idle");
   }
 
   return (
@@ -48,11 +50,29 @@ function UploadButton({
         ref={fileInputRef}
         className="hidden"
         onChange={handleFileInput}
+        multiple
       />
       <Button
-        sx={{ fontSize: "1.25rem", mb: "0.5rem" }}
         variant="contained"
+        startIcon={
+          <FileUploadIcon sx={{ fontSize: "4rem", color: "#ffffff" }} />
+        }
         onClick={handleFileButtonClick}
+        sx={{
+          mt: "1rem",
+          fontSize: "1.1rem",
+          mb: "0.5rem",
+          padding: "0.6rem 1.5rem",
+          borderRadius: "10px",
+          textTransform: "none",
+          backgroundColor: "#1F1300",
+          color: "#F6F7F8",
+          transition: "0.2s ease",
+          ":hover": {
+            backgroundColor: "#6D5A72",
+            transform: "translateY(-2px)",
+          },
+        }}
       >
         Upload files
       </Button>
