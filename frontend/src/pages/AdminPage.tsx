@@ -1,8 +1,8 @@
-import FileCard from "../components/FileList"
+import FileList from "../components/FileList"
 
 function AdminPage() {
   return (
-    <FileCard />
+    <FileList />
   )
 }
 

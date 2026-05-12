@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import FileCard from './FileCard';
+import { useEffect, useState } from "react";
+import FileCard from "./FileCard";
 
 interface FileItem {
   id: string;
@@ -11,7 +11,7 @@ interface FileItem {
 function FileList() {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchFiles();
@@ -19,12 +19,12 @@ function FileList() {
 
   async function fetchFiles() {
     try {
-      const response = await fetch('http://localhost:5000/api/v1/files');
+      const response = await fetch("http://localhost:5000/api/v1/files");
       const data = await response.json();
       setFiles(data.data);
       setLoading(false);
     } catch (error) {
-      setError('Noe gikk galt, prøv igjen senere');
+      setError("Noe gikk galt, prøv igjen senere");
       setLoading(false);
     }
   }

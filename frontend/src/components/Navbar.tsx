@@ -32,7 +32,10 @@ export default function Navbar() {
             >
               <Button color="inherit">Login</Button>
             </NavLink>
-            <NavLink to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+            <NavLink
+              to="/login"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
               <Button color="inherit">Sign Up</Button>
             </NavLink>
           </div>
