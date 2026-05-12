@@ -3,10 +3,15 @@ import { Pool } from "pg";
 import cors from "cors";
 import multer from "multer";
 import uploadFile from "./utils/uploadFile";
-import { getFiles } from "./utils/dbHelper";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth";
-//import assignStudentsToReviewFile from "./utils/assignStudents";
+import assignStudentsToReviewFile from "./utils/assignStudents";
+import {
+  fetchAllFiles,
+  fetchSingularFile,
+  fetchUserFiles,
+} from "./utils/dbQuerier";
+import { TempAssignment } from "./types/types";
 
 const app = express();
 const PORT = 5000;
@@ -38,6 +43,7 @@ app.get("/", (req, res) => {
   res.send("Hello from backend");
 });
 
+//For students uploading files
 app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     console.log("File doesnt exist or wasnt uploaded.");
@@ -60,25 +66,27 @@ app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-app.get("/api/v1/files", (req, res) => {
-  const allFiles = getFiles();
-  const frontendSafeFiles = allFiles.map((file) => ({
-    id: file.id,
-    originalName: file.originalName,
-    displayName: file.displayName,
-    extension: file.extension,
-    createdAt: file.createdAt,
-  }));
-  res.status(200).json({
-    success: true,
-    data: frontendSafeFiles,
-  });
+//why are we using this again... are we using this??? do we need this?? ill let it sit for now.
+app.get("/api/v1/files", async (req, res) => {
+  try {
+    const allFiles = await fetchAllFiles();
+
+    res.status(200).json({
+      success: true,
+      data: allFiles,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
-app.get("/api/v1/files/:id", (req, res) => {
+//for file previews, split screens, singular file pages
+app.get("/api/v1/files/:id", async (req, res) => {
   const id = req.params.id;
-  const allFiles = getFiles();
-  const file = allFiles.find((file) => file.id === Number(id));
+  const file = await fetchSingularFile(Number(id));
   if (!file) {
     return res.status(404).json({
       success: false,
@@ -91,6 +99,7 @@ app.get("/api/v1/files/:id", (req, res) => {
   });
 });
 
+//for sending of files
 app.post("/api/v1/files/:id/distribute", (req, res) => {
   const id = req.params.id;
 
@@ -100,6 +109,35 @@ app.post("/api/v1/files/:id/distribute", (req, res) => {
     res.status(200).json({
       success: true,
       data: assigningResult,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+//for students to see all their assigned files
+app.get("/api/v1/me/assignments", async (req, res) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: req.headers as any,
+    });
+
+    if (!session) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized. Denied access.",
+      });
+    }
+
+    const files = await fetchUserFiles(session.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Assignments fetched successfully",
+      data: files,
     });
   } catch (error: any) {
     res.status(500).json({

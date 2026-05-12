@@ -3,9 +3,11 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import DarkModeButton from "./darkModeButton";
+
 import { NavLink } from "react-router-dom";
 import { authClient } from "../utils/auth-client";
-import DarkModeButton from "./darkModeButton";
 
 export default function Navbar() {
   const handleSignOut = async () => {
@@ -27,10 +29,10 @@ export default function Navbar() {
           </NavLink>
           <div className="flex gap-5 min-w-1/3 justify-end items-center">
             <NavLink
-              to="/home"
+              to="/upload"
               style={{ color: "inherit", textDecoration: "none" }}
             >
-              <Button color="inherit">Home</Button>
+              <Button color="inherit">Upload</Button>
             </NavLink>
             <NavLink
               to="/login"
@@ -42,13 +44,25 @@ export default function Navbar() {
             <Button color="inherit" onClick={handleSignOut}>
               Sign Out
             </Button>
-            
-            <NavLink to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+
+            <NavLink
+              to="/login"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
               <Button color="inherit">Sign Up</Button>
             </NavLink>
-        
-              <DarkModeButton />
-              
+
+            <NavLink
+              to="/me/assignments"
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
+              <Button color="inherit">
+                <AccountCircleIcon style={{ marginRight: 5 }} />
+                Min Side
+              </Button>
+            </NavLink>
+
+            <DarkModeButton />
           </div>
         </Toolbar>
       </AppBar>

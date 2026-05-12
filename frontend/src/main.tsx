@@ -1,4 +1,4 @@
-import { StrictMode, useEffect } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import HomePage from "./HomePage.tsx";
@@ -11,6 +11,7 @@ import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";
 
 import { ThemeProvider, createTheme, } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import StudentPage from "./pages/StudentPage.tsx";
 
 const theme = createTheme({
   colorSchemes: {
@@ -28,10 +29,11 @@ createRoot(document.getElementById("root")!).render(
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/upload" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin/file/:id" element={<AssignmentDistribute />} />
+          <Route path="/me/assignments" element={<StudentPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
