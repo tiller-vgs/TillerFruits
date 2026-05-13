@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-@config {
-  darkMode: 'class';
-}
+
 
 @theme {
   --color-bright-snow: #f6f7f8;

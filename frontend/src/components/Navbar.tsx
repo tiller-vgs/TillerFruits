@@ -54,7 +54,16 @@ export default function Navbar() {
               </Button>
             )}
 
-            <DarkModeButton />
+            <Button color="inherit" onClick={handleSignOut}>
+              Sign Out
+            </Button>
+
+            <NavLink to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Button color="inherit">Sign Up</Button>
+            </NavLink>
+        
+              <DarkModeButton />
+              
           </div>
         </Toolbar>
       </AppBar>
