@@ -103,7 +103,7 @@ app.post("/api/v1/admin/files/:id/distribute", (req, res) => {
   const id = req.params.id;
 
   try {
-    const assigningResult = assignStudentsToReviewFile(id);
+    const assigningResult = assignStudentsToReviewFile(Number(id));
 
     res.status(200).json({
       success: true,
