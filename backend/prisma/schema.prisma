@@ -6,18 +6,30 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+enum Role {
+  student 
+  teacher
+  admin
+}
 
+enum FileStatus {
+  new
+  sent
+}
 model User {
   id            String    @id
   name          String
   email         String    @unique
   emailVerified Boolean   @default(false)
   image         String?
+  role          Role         @default(student)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   files         File[]
+  assignments   Assignment[] 
   accounts      Account[]
   sessions      Session[]
+  
 
   @@map("user")
 }
@@ -75,16 +87,33 @@ model File {
   /// NEVER use in frontend, only for backend queries. Use displayName for frontend.
   creatorId    String
   /// anonymous and regenerates for each new upload even if its the same user.
-  displayName  String
+  displayName  String @unique
   originalName String
   savedName    String
   mimeType     String
   extension    String
   fileSize     Int
   filehash     String
+  status       FileStatus   @default(new)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   creator      User     @relation(fields: [creatorId], references: [id])
+  assignments  Assignment[]
 
   @@index([creatorId])
+}
+model Assignment {
+  id              Int      @id @default(autoincrement())
+  fileId          Int
+  creatorId       String
+  userId          String
+  anonDisplayName String   @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  file            File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([fileId])
+  @@index([userId])
+  @@map("assignment")
 }
