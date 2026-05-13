@@ -10,8 +10,7 @@ import {
   fetchAllFiles,
   fetchSingularFile,
   fetchUserFiles,
-} from "./utils/dbQuerier";
-import { TempAssignment } from "./types/types";
+} from "./services/fileService";
 
 const app = express();
 const PORT = 5000;
@@ -66,8 +65,8 @@ app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-//why are we using this again... are we using this??? do we need this?? ill let it sit for now.
-app.get("/api/v1/files", async (req, res) => {
+//why are we using this again... are we using this??? do we need this?? ill let it sit under admin for now.
+app.get("/api/v1/admin/files", async (req, res) => {
   try {
     const allFiles = await fetchAllFiles();
 
@@ -99,8 +98,8 @@ app.get("/api/v1/files/:id", async (req, res) => {
   });
 });
 
-//for sending of files
-app.post("/api/v1/files/:id/distribute", (req, res) => {
+//for sending of files ADMIN
+app.post("/api/v1/admin/files/:id/distribute", (req, res) => {
   const id = req.params.id;
 
   try {

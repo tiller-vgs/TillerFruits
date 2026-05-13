@@ -6,7 +6,7 @@ function StudentPage() {
   return (
     <div className="flex flex-col items-center p-5">
       <h1 className="text-bold text-2xl">Dette er en studentside</h1>
-      <h2>For øyeblikket er det eneste du kan se oppgaver du blir tildelt</h2>
+      <h2>For øyeblikket er oppgaver du blir tildelt det eneste du kan se på siden</h2>
 
       {allUserAssignments.map((assignment) => (
         <div key={assignment.id}>

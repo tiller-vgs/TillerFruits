@@ -7,4 +7,4 @@ export type UploadFileType = {
   type: string;
 }
 
-export type UploadStatus = "idle" | "success" | "error";
+export type UploadStatus = "idle" | "success" | "error" | "loading";
