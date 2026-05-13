@@ -8,6 +8,7 @@ import { authClient } from "../utils/auth-client";
 import DarkModeButton from "./darkModeButton";
 
 export default function Navbar() {
+  const { data: session } = authClient.useSession();
   const handleSignOut = async () => {
     await authClient.signOut();
     window.location.href = "/";
@@ -32,12 +33,26 @@ export default function Navbar() {
             >
               <Button color="inherit">Home</Button>
             </NavLink>
-            <NavLink
-              to="/login"
-              style={{ color: "inherit", textDecoration: "none" }}
-            >
-              <Button color="inherit">Login</Button>
-            </NavLink>
+            {!session?.user ? (
+              <div className="flex gap-2">
+                <NavLink
+                  to="/login"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  <Button color="inherit">Login</Button>
+                </NavLink>
+                <NavLink
+                  to="/login"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  <Button color="inherit">Sign Up</Button>
+                </NavLink>
+              </div>
+            ) : (
+              <Button color="inherit" onClick={handleSignOut}>
+                Sign Out
+              </Button>
+            )}
 
             <Button color="inherit" onClick={handleSignOut}>
               Sign Out
