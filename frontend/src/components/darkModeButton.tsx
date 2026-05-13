@@ -23,8 +23,8 @@ export default function DarkModeButton() {
       <IconButton
         onClick={() => setMode('light')}
         sx={{
-          bgcolor:'light',
-          color:'black' ,
+          
+          color:'white' ,
         }}
       >
         <LightModeIcon />
@@ -33,8 +33,8 @@ export default function DarkModeButton() {
       <IconButton
         onClick={() => setMode('dark')}
         sx={{
-          bgcolor:'dark',
-          color:'white' ,
+          
+          color:'black' ,
         }}
       >
         <DarkModeIcon />

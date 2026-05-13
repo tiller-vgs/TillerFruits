@@ -5,8 +5,7 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import generateRandomDisplayName from "./generateRandomDisplayName";
 import { prisma } from "../lib/db";
-import { File } from "../generated/prisma/browser";
-import { User } from "better-auth";
+import { File, User } from "../generated/prisma/browser";
 
 export default async function uploadFile(
   buffer: Buffer,
@@ -74,9 +73,9 @@ export default async function uploadFile(
   //REPLACE WITH LOGGED IN USER
   const testUserUpload: User = await prisma.user.create({
     data: {
-      id: "user1",
-      name: "noah",
-      email: "noah@example.com",
+      id: "user777",
+      name: "noahtest7777",
+      email: "noahtestin77777g@dont.cancelme",
       emailVerified: true,
       createdAt: new Date(),
       updatedAt: new Date(),

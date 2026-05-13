@@ -55,24 +55,40 @@ function UploadButton({
       <Button
         variant="contained"
         startIcon={
-          <FileUploadIcon sx={{ fontSize: "4rem", color: "#ffffff" }} />
+          <FileUploadIcon
+            sx={[
+              (theme) =>
+                theme.applyStyles("dark", {
+                  color: "#000",
+                }),
+            ]}
+          />
         }
         onClick={handleFileButtonClick}
-        sx={{
-          mt: "1rem",
-          fontSize: "1.1rem",
-          mb: "0.5rem",
-          padding: "0.6rem 1.5rem",
-          borderRadius: "10px",
-          textTransform: "none",
-          backgroundColor: "#1F1300",
-          color: "#F6F7F8",
-          transition: "0.2s ease",
-          ":hover": {
-            backgroundColor: "#6D5A72",
-            transform: "translateY(-2px)",
-          },
-        }}
+        sx={[
+          (theme) => ({
+            backgroundColor: "#1F1300",
+            fontSize: "1.25rem",
+            paddingX: "1.5rem",
+            fontWeight: 600,
+            borderRadius: "1rem",
+            textTransform: "none",
+            transition: "0.2s ease",
+            ":hover": {
+              transform: "translateY(-2px)",
+              boxShadow: theme.shadows[3],
+              backgroundColor: theme.palette.secondary.dark,
+            },
+          }),
+          (theme) =>
+            theme.applyStyles("dark", {
+              color: "#000",
+              backgroundColor: theme.palette.secondary.main,
+              "&:hover": {
+                backgroundColor: theme.palette.secondary.dark,
+              },
+            }),
+        ]}
       >
         Upload files
       </Button>

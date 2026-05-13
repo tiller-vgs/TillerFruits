@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -62,7 +63,7 @@ export default function LandingPage() {
   const splitReveal = useReveal()
 
   return (
-    <div className="bg-bright-snow min-h-screen overflow-x-hidden">
+    <div className=" min-h-screen overflow-x-hidden">
 
       <div className="relative flex flex-col items-center justify-center min-h-[calc(100vh-65px)] px-6 text-center overflow-hidden">
 
@@ -97,51 +98,56 @@ export default function LandingPage() {
         <div className="animate-hero-in relative z-10 max-w-2xl">
           <div
             className="inline-block text-sm font-semibold px-4 py-1.5 rounded-full mb-6 border"
-            style={{ color: 'var(--color-sage-green)', borderColor: 'var(--color-sage-green)', background: 'rgba(103,148,54,0.08)' }}
+            style={{ color: 'var(--color-sage-green)', borderColor: 'var(--color-sage-green)',}}
           >
             Hverandrevurdering for skoler
           </div>
 
-          <h1 className="text-5xl sm:text-6xl font-extrabold text-coffee-bean leading-[1.1] mb-6 tracking-tight">
+          <h1 className="text-5xl sm:text-6xl font-extrabold leading-[1.1] mb-6 tracking-tight">
             Tilbakemeldinger<br />
             <span style={{ color: 'var(--color-sage-green)' }}>som faktisk fungerer</span>
           </h1>
 
-          <p className="text-xl mb-10 max-w-lg mx-auto leading-relaxed" style={{ color: 'rgba(31,19,0,0.6)' }}>
+          <p className="text-xl mb-10 max-w-lg mx-auto leading-relaxed" >
             TillerFruits er en plattform for hverandrevurdering. Læreren lager oppgaven og setter kriteriene, elevene leverer inn og vurderer hverandre. Enkelt og greit.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
+            <Button
               onClick={() => navigate('/home')}
-              className="px-8 py-3.5 font-semibold rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg text-bright-snow bg-coffee-bean hover:bg-sage-green"
+              sx={[ 
+                (theme) => ({
+                  backgroundColor: 'var(--color-bright-lemon)', color: 'var(--color-coffee-bean)',paddingX:3,paddingY:0.5,fontWeight:700, borderRadius:3, border:"2px solid", borderColor:"var(--color-coffee-bean)"
+                  }), 
+                  (theme) => 
+                    theme.applyStyles("dark", {
+                      "&:hover":
+                      {backgroundColor:"transparent", 
+                      borderColor:"var(--color-bright-lemon)", 
+                      color:"var(--color-bright-lemon)"}
+                    })             
+              ]}
             >
               Kom i gang
-            </button>
+            </Button>
             <button
-              className="px-8 py-3.5 font-semibold rounded-xl border-2 transition-all duration-200 text-coffee-bean hover:text-sage-green border-coffee-bean/20 hover:border-sage-green"
+              className="px-8 py-3.5 font-semibold rounded-xl border-2 transition-all duration-200 hover:border-sage-green"
               onClick={() => featuresReveal.ref.current?.scrollIntoView({ behavior: 'smooth' })}
             >
               Se hvordan det fungerer
             </button>
           </div>
         </div>
-
-        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none">
-          <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-12 block">
-            <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#ffffff" />
-          </svg>
-        </div>
       </div>
 
-      <div ref={featuresReveal.ref} className="bg-white px-6 py-20">
+      <div ref={featuresReveal.ref} className=" px-6 py-20">
         <div className="max-w-5xl mx-auto">
           <div
             className="text-center mb-12 transition-all duration-700"
             style={{ opacity: featuresReveal.visible ? 1 : 0, transform: featuresReveal.visible ? 'none' : 'translateY(24px)' }}
           >
-            <h2 className="text-3xl font-bold text-coffee-bean mb-3">Hvorfor TillerFruits?</h2>
-            <p className="text-lg" style={{ color: 'rgba(31,19,0,0.5)' }}>
+            <h2 className="text-3xl font-bold">Hvorfor TillerFruits?</h2>
+            <p className="text-lg text-grey-600">
               Her er hva du får ut av det.
             </p>
           </div>
@@ -150,24 +156,22 @@ export default function LandingPage() {
             {features.map((f, i) => (
               <div
                 key={f.title}
-                className="rounded-2xl p-7 border hover:-translate-y-1 hover:shadow-md cursor-default"
+                className="rounded-2xl w-full p-7 border hover:-translate-y-1 hover:shadow-md cursor-default bg-bright-snow border-gray-200"
                 style={{
-                  background: 'var(--color-bright-snow)',
-                  borderColor: 'rgba(31,19,0,0.06)',
                   opacity: featuresReveal.visible ? 1 : 0,
                   transform: featuresReveal.visible ? 'translateY(0)' : 'translateY(28px)',
                   transition: `opacity 0.6s ease ${i * 100 + 150}ms, transform 0.6s ease ${i * 100 + 150}ms, box-shadow 0.25s ease, translate 0.25s ease`,
                 }}
               >
                 <h3 className="text-lg font-bold text-coffee-bean mb-2">{f.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(31,19,0,0.55)' }}>{f.description}</p>
+                <p className="text-sm leading-relaxed text-coffee-bean">{f.description}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div ref={stepsReveal.ref} className="px-6 py-24" style={{ background: 'var(--color-coffee-bean)' }}>
+      <div ref={stepsReveal.ref} className="px-6 py-24 bg-coffee-bean">
         <div className="max-w-5xl mx-auto">
           <h2
             className="text-3xl font-bold text-center mb-16 transition-all duration-700"
@@ -204,7 +208,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      <div ref={splitReveal.ref} className="bg-white px-6 py-20">
+      <div ref={splitReveal.ref} className="px-6 py-20">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div
             className="rounded-2xl p-8 flex flex-col gap-4 transition-all duration-700"
@@ -215,8 +219,8 @@ export default function LandingPage() {
               transform: splitReveal.visible ? 'translateX(0)' : 'translateX(-32px)',
             }}
           >
-            <h3 className="text-2xl font-bold text-coffee-bean">For elever</h3>
-            <p className="leading-relaxed" style={{ color: 'rgba(31,19,0,0.65)' }}>
+            <h3 className="text-2xl font-bold ">For elever</h3>
+            <p className="leading-relaxed">
               Du leverer inn teksten din, vurderer noen medelever, og får tilbakemelding tilbake. Ganske greit system egentlig.
             </p>
             <button
@@ -238,8 +242,8 @@ export default function LandingPage() {
               transitionDelay: '150ms',
             }}
           >
-            <h3 className="text-2xl font-bold text-coffee-bean">For lærere</h3>
-            <p className="leading-relaxed" style={{ color: 'rgba(31,19,0,0.65)' }}>
+            <h3 className="text-2xl font-bold ">For lærere</h3>
+            <p className="leading-relaxed">
               Du setter opp oppgaven og kriteriene, så tar systemet seg av resten. Du kan se hvem som har levert inn og hvem som har vurdert.
             </p>
             <button

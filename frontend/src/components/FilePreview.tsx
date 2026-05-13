@@ -32,6 +32,23 @@ function FilePreview({ file }: { file: File | undefined }) {
           variant="contained"
           disabled={currentPage <= 1}
           onClick={() => setCurrentPage((page) => page - 1)}
+          sx={[
+            {
+              backgroundColor: "transparent",
+              borderRadius: "1rem",
+              fontWeight: 600,
+              color: "#1F1300",
+            },
+            (theme) =>
+              theme.applyStyles("dark", {
+                color: "#fff",
+                border: "1px solid",
+                borderColor: "#fff",
+                "&:hover": {
+                  borderColor: theme.palette.secondary.dark,
+                },
+              }),
+          ]}
         >
           Previous
         </Button>
@@ -42,6 +59,23 @@ function FilePreview({ file }: { file: File | undefined }) {
           variant="contained"
           disabled={currentPage >= (numPages || 1)}
           onClick={() => setCurrentPage((page) => page + 1)}
+          sx={[
+            {
+              backgroundColor: "transparent",
+              borderRadius: "1rem",
+              fontWeight: 600,
+              color: "#1F1300",
+            },
+            (theme) =>
+              theme.applyStyles("dark", {
+                color: "#fff",
+                border: "1px solid",
+                borderColor: "#fff",
+                "&:hover": {
+                  borderColor: theme.palette.secondary.dark,
+                },
+              }),
+          ]}
         >
           Next
         </Button>
