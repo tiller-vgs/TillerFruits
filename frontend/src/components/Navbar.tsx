@@ -56,14 +56,6 @@ export default function Navbar() {
               </Button>
             )}
 
-            <Button color="inherit" onClick={handleSignOut}>
-              Sign Out
-            </Button>
-
-            <NavLink to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-              <Button color="inherit">Sign Up</Button>
-            </NavLink>
-
             <NavLink
               to="/me/assignments"
               style={{ color: "inherit", textDecoration: "none" }}

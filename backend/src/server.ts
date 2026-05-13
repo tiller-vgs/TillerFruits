@@ -51,7 +51,7 @@ app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
 
   try {
     const { buffer, originalname } = req.file;
-    await uploadFile(buffer, originalname);
+    await uploadFile(buffer, originalname, req.headers);
 
     res.status(200).json({
       success: true,

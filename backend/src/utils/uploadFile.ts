@@ -5,11 +5,13 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import generateRandomDisplayName from "./generateRandomDisplayName";
 import { prisma } from "../lib/db";
-import { File, User } from "../generated/prisma/browser";
+import { betterAuth } from "better-auth";
+import { auth } from "./auth";
 
 export default async function uploadFile(
   buffer: Buffer,
   originalFilename: string,
+  headers: any,
 ) {
   const maxFileSize = 10 * 1024 * 1024;
   const minFileSize = 1 * 1024;
@@ -70,21 +72,19 @@ export default async function uploadFile(
   const secureFilename = `${randomFilename}.${mimeFileExtension?.ext}`;
   const fileHash = createHash("sha256").update(buffer).digest("hex");
 
-  //REPLACE WITH LOGGED IN USER
-  const testUserUpload: User = await prisma.user.create({
-    data: {
-      id: "user777",
-      name: "noahtest7777",
-      email: "noahtestin77777g@dont.cancelme",
-      emailVerified: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
+  const session = await auth.api.getSession({
+    headers,
   });
 
-  const uploadingFile: File = await prisma.file.create({
+  if (!session) {
+    throw new Error("Unauthorized. Denied access.");
+  }
+
+  const creatorUserId = session.user.id;
+
+  await prisma.file.create({
     data: {
-      creatorId: testUserUpload.id,
+      creatorId: creatorUserId,
       displayName: displayName,
       originalName: originalFilename,
       savedName: secureFilename,
@@ -95,8 +95,6 @@ export default async function uploadFile(
     },
   });
 
-  console.log(uploadingFile);
-
   try {
     if (!existsSync(savingDir)) {
       await mkdir(savingDir, { recursive: true });
@@ -105,7 +103,6 @@ export default async function uploadFile(
 
     const savedFilePath = join(savingDir, secureFilename);
     await writeFile(savedFilePath, buffer);
-    console.log(`Filen er lagret på: ${savedFilePath}`);
   } catch (error) {
     console.error("Error saving file:", error);
     throw new Error("Det oppsto en feil under lagring av filen.");
