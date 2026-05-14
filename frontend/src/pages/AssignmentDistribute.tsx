@@ -1,11 +1,10 @@
-import Button from "@mui/material/Button";
 import FilePreview from "../components/FilePreview";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import FormHelperText from "@mui/material/FormHelperText";
-import handleDistribution from "../utils/handleDistribution";
 import type { FileTypeFromDB } from "../../types/types";
 import Alert from "@mui/material/Alert";
+import SendAssignmentButton from "../components/SendAssignmentButton";
 
 export default function AssignmentDistribute() {
   const { id } = useParams();
@@ -43,12 +42,16 @@ export default function AssignmentDistribute() {
   const isPdf = file?.extension === "pdf";
 
   return (
-    <main className="flex flex-row min-h-[calc(100dvh-65px)] w-full p-5 justify-between">
+    <main className="flex flex-row min-h-[calc(100dvh-65px)] w-full p-5 gap-5 justify-between">
       <div className="flex flex-col w-2/3 gap-3">
-        <h1>
-          [{file?.extension.toUpperCase()}] - sendt av:{" "}
-          <span className="font-bold">{file?.displayName}</span>
-        </h1>
+        {!file ? (
+          <h1>Ugyldig ID. Kan ikke finne en fil med denne ID-en</h1>
+        ) : (
+          <h1>
+            [{file?.extension.toUpperCase()}] {file?.originalName.split(".")[0]}{" "}
+            - sendt av: <span className="font-bold">{file?.displayName}</span>
+          </h1>
+        )}
 
         {errorMessage && (
           <Alert severity="error" sx={{ fontSize: "1.1rem" }}>
@@ -63,23 +66,26 @@ export default function AssignmentDistribute() {
             />
           </div>
         ) : file ? (
-          <Alert severity="error" sx={{ fontSize: "1.1rem", width:"60%"}}>
+          <Alert severity="error" sx={{ fontSize: "1.1rem", width: "60%" }}>
             Forhåndsvisning er tilgjengelig kun for PDF-filer.
           </Alert>
         ) : null}
       </div>
 
-      <div className="w-1/2">
-        <Button
-          onClick={() =>
-            handleDistribution({ setIsSent, setStudentAmount, fileId })
-          }
-        >
-          Send to students
-        </Button>
+      <div className="flex flex-col w-1/2 items-center mt-10 text-center">
+        <p>Per no, er ikke spørsmålsskjemaer aktivert ved sending.</p>
+        <p>Vennligst vent til utviklerne får skjemaet på plass.</p>
+
+        <SendAssignmentButton
+          setIsSent={setIsSent}
+          setStudentAmount={setStudentAmount}
+          setErrorMessage={setErrorMessage}
+          fileId={fileId}
+        />
+
         {isSent && (
           <FormHelperText>
-            File successfully sent to {studentAmount} random students
+            Filen er sendt til {studentAmount} tilfeldige elever
           </FormHelperText>
         )}
       </div>

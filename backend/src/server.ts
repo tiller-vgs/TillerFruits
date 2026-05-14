@@ -10,6 +10,7 @@ import assignStudentsToReviewFile from "./utils/assignStudents";
 import {
   fetchAllFiles,
   fetchAllFilesByIdFrontend,
+  fetchInternalFile,
   fetchSingularFileFrontend,
   fetchUserFiles,
   updateFileStatus,
@@ -104,9 +105,26 @@ app.get("/api/v1/files/:id", async (req, res) => {
 
 //for sending of files ADMIN
 app.post("/api/v1/admin/files/:id/distribute", async (req, res) => {
-  const id = req.params.id;
+  const id = Number(req.params.id);
 
   try {
+    //check if file has already been sent
+    const file = await fetchInternalFile(id);
+    if (!file) {
+      return res.status(404).json({
+        success: false,
+        message: "File not found",
+      });
+    }
+
+    if (file.status === "sent") {
+      return res.status(409).json({
+        success: false,
+        message: "File has already been distributed",
+      });
+    }
+
+    // if file is new, assign students and make new assignement
     const { fileId, studentAmount } = await assignStudentsToReviewFile(
       Number(id),
     );
