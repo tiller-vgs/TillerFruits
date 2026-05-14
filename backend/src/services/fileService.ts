@@ -1,19 +1,7 @@
-import { File } from "../generated/prisma/browser";
+import { File, FileStatus } from "../generated/prisma/browser";
 import { prisma } from "../lib/db";
 import { toFrontendFile } from "../mappers/file.mapper";
 import { fetchUserAssignments } from "./assignmentService";
-
-function convertFilesIntoFrontendSafeFiles(backendFileArray: File[]) {
-  const frontendSafeFiles = backendFileArray.map((file) => ({
-    id: file.id,
-    originalName: file.originalName,
-    displayName: file.displayName,
-    extension: file.extension,
-    createdAt: file.createdAt,
-  }));
-
-  return frontendSafeFiles;
-}
 
 //all files. unsure why we're using it. if you know please comment.
 export async function fetchAllFiles() {
@@ -49,6 +37,18 @@ export async function fetchSingularFileFrontend(fileId: number) {
   return toFrontendFile(file);
 }
 
+//for all file data in frontend based on creatorID. used in mypage/creatorAssignments
+export async function fetchAllFilesByIdFrontend(creatorid: string) {
+  const files = await prisma.file.findMany({
+    where: {
+      creatorId: creatorid,
+    },
+  });
+  if (!files) return null;
+
+  return files.map(toFrontendFile);
+}
+
 //for backend that needs extra file information
 export async function fetchInternalFile(fileId: number) {
   const files = await prisma.file.findFirst({
@@ -56,4 +56,17 @@ export async function fetchInternalFile(fileId: number) {
   });
 
   return files;
+}
+
+export async function updateFileStatus(fileId: number, status: FileStatus) {
+  const updatedFile = await prisma.file.update({
+    where: {
+      id: fileId,
+    },
+    data: {
+      status,
+    },
+  });
+
+  return updatedFile;
 }

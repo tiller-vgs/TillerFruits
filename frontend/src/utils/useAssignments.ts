@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import type { FileTypeFromDB } from "../../types/types";
 
 export default function useAssignments() {
   const navigate = useNavigate();
 
-  const [assignments, setAssignments] = useState<[]>([]);
+  const [newAssignments, setNewAssignments] = useState<FileTypeFromDB[]>([]);
+  const [myAssignments, setMyAssignments] = useState<FileTypeFromDB[]>([]);
 
   useEffect(() => {
     async function checkAuthInAssignments() {
@@ -19,7 +21,9 @@ export default function useAssignments() {
         }
 
         const assignmentData = await res.json();
-        setAssignments(assignmentData.data);
+        console.log(assignmentData);
+        setNewAssignments(assignmentData.data.assignmentFiles);
+        setMyAssignments(assignmentData.data.myAssignmentFiles);
       } catch (error) {
         console.error(error);
       }
@@ -28,5 +32,5 @@ export default function useAssignments() {
     checkAuthInAssignments();
   }, [navigate]);
 
-  return assignments;
+  return { newAssignments, myAssignments };
 }

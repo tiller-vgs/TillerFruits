@@ -9,8 +9,10 @@ import { auth } from "./utils/auth";
 import assignStudentsToReviewFile from "./utils/assignStudents";
 import {
   fetchAllFiles,
+  fetchAllFilesByIdFrontend,
   fetchSingularFileFrontend,
   fetchUserFiles,
+  updateFileStatus,
 } from "./services/fileService";
 import { getFilePath } from "./utils/getFilePath";
 
@@ -110,6 +112,7 @@ app.post("/api/v1/admin/files/:id/distribute", async (req, res) => {
     );
 
     if (!fileId) throw new Error("No file found");
+    await updateFileStatus(fileId, "sent");
 
     res.status(200).json({
       success: true,
@@ -156,12 +159,13 @@ app.get("/api/v1/me/assignments", async (req, res) => {
       });
     }
 
-    const files = await fetchUserFiles(session.user.id);
+    const assignmentFiles = await fetchUserFiles(session.user.id);
+    const myAssignmentFiles = await fetchAllFilesByIdFrontend(session.user.id);
 
     res.status(200).json({
       success: true,
       message: "Assignments fetched successfully",
-      data: files,
+      data: { assignmentFiles, myAssignmentFiles },
     });
   } catch (error: any) {
     res.status(500).json({
