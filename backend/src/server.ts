@@ -49,14 +49,30 @@ app.get("/", (req, res) => {
 
 //For students uploading files
 app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
+  const session = await auth.api.getSession({
+    headers: req.headers as any,
+  });
+
+  if (!session) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized. Denied access.",
+    });
+  }
+
   if (!req.file) {
     console.log("File doesnt exist or wasnt uploaded.");
-    return res.status(400).send("File doesnt exist or wasnt uploaded.");
+    return res.status(400).json({
+      success: false,
+      message: "File doesnt exist or wasnt uploaded.",
+    });
   }
+
+  const userId = session.user.id;
 
   try {
     const { buffer, originalname } = req.file;
-    await uploadFile(buffer, originalname, req.headers);
+    await uploadFile(buffer, originalname, userId);
 
     res.status(200).json({
       success: true,
@@ -191,6 +207,23 @@ app.get("/api/v1/me/assignments", async (req, res) => {
       message: error.message,
     });
   }
+});
+
+app.get("/api/v1/auth/session", async (req, res) => {
+  const session = await auth.api.getSession({
+    headers: req.headers as any,
+  });
+
+  if (!session) {
+    return res.status(401).json({
+      authenticated: false,
+    });
+  }
+
+  res.status(200).json({
+    authenticated: true,
+    user: session.user,
+  });
 });
 
 app.listen(PORT, () => {

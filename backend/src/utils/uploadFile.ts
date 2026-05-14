@@ -5,13 +5,11 @@ import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import generateRandomDisplayName from "./generateRandomDisplayName";
 import { prisma } from "../lib/db";
-import { betterAuth } from "better-auth";
-import { auth } from "./auth";
 
 export default async function uploadFile(
   buffer: Buffer,
   originalFilename: string,
-  headers: any,
+  userId: string,
 ) {
   const maxFileSize = 10 * 1024 * 1024;
   const minFileSize = 1 * 1024;
@@ -72,19 +70,9 @@ export default async function uploadFile(
   const secureFilename = `${randomFilename}.${mimeFileExtension?.ext}`;
   const fileHash = createHash("sha256").update(buffer).digest("hex");
 
-  const session = await auth.api.getSession({
-    headers,
-  });
-
-  if (!session) {
-    throw new Error("Unauthorized. Denied access.");
-  }
-
-  const creatorUserId = session.user.id;
-
   await prisma.file.create({
     data: {
-      creatorId: creatorUserId,
+      creatorId: userId,
       displayName: displayName,
       originalName: originalFilename,
       savedName: secureFilename,

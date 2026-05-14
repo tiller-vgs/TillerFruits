@@ -2,11 +2,9 @@ import Footer from "../components/Footer";
 import useAssignments from "../utils/useAssignments";
 
 function StudentPage() {
-  const allUserAssignments = useAssignments();
-  const receivedAssignments = allUserAssignments.newAssignments;
-  const userIsCreatorAssignments = allUserAssignments.myAssignments;
+  const { newAssignments, myAssignments } = useAssignments();
 
-  console.log(allUserAssignments);
+  console.log(newAssignments, myAssignments);
   return (
     <main
       id="mainWrapperWithFooter"
@@ -22,14 +20,14 @@ function StudentPage() {
 
       <p>Filer å sende tilbakemelding på:</p>
       <section id="NewFileList" className="w-1/3 border-2 rounded-2xl p-2 px-5">
-        {receivedAssignments.map((assignment) => (
+        {newAssignments.map((assignment) => (
           <h1>{assignment.originalName}</h1>
         ))}
       </section>
 
       <p>Mine filer:</p>
       <section id="NewFileList" className="w-1/3 border-2 rounded-2xl p-2 px-5">
-        {userIsCreatorAssignments.map((assignment) => (
+        {myAssignments.map((assignment) => (
           <h1>{assignment.originalName}</h1>
         ))}
       </section>

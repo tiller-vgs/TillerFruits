@@ -7,6 +7,8 @@ import SubmitFileButton from "./components/SubmitFileButton";
 import FilePreview from "./components/FilePreview";
 import FilePreviewButton from "./components/FilePreviewButton";
 import Alert from "@mui/material/Alert";
+import checkAuth from "./utils/checkAuth";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -18,12 +20,22 @@ function HomePage() {
   const acceptedFileFormats: string[] = [".pdf", ".docx"];
   const fileIsPdf: boolean = addedFile?.type === "application/pdf";
   const file = addedFile?.file;
+  const navigate = useNavigate();
+
+  // useeffect for changing uploading status
   useEffect(() => {
     if (uploadStatus !== "success") return;
-
     setAddedFile(null);
     setErrorMessage("");
   }, [uploadStatus]);
+
+  // useeffect for verification of user
+  useEffect(() => {
+    async function verify() {
+      await checkAuth(navigate);
+    }
+    verify();
+  }, [navigate]);
 
   return (
     <main
