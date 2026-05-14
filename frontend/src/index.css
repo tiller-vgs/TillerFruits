@@ -1,26 +1,44 @@
 @import "tailwindcss";
 
+
+
 @theme {
-  --color-bright-snow: #F6F7F8;
-  --color-bright-lemon: #F9E900;
+  --color-bright-snow: #f6f7f8;
+  --color-bright-lemon: #f9e900;
   --color-sage-green: #679436;
-  --color-coffee-bean: #1F1300;
-  --color-dusty-lavender: #6D5A72;
+  --color-coffee-bean: #1f1300;
+  --color-dusty-lavender: #6d5a72;
 }
 
 @keyframes heroIn {
-  from { opacity: 0; transform: translateY(40px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px)   rotate(0deg); }
-  50%       { transform: translateY(-16px) rotate(4deg); }
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(4deg);
+  }
 }
 
 @keyframes floatSlow {
-  0%, 100% { transform: translateY(0px)  rotate(0deg); }
-  50%       { transform: translateY(-9px) rotate(-3deg); }
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-9px) rotate(-3deg);
+  }
 }
 
 .animate-hero-in {
@@ -33,4 +51,13 @@
 
 .animate-float-slow {
   animation: floatSlow 6.5s ease-in-out infinite;
+}
+
+.react-pdf__Page,
+.react-pdf__Page__canvas,
+.pdf-page,
+.pdf-page canvas {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block;
 }

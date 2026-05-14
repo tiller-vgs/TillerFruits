@@ -5,8 +5,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 import { authClient } from "../utils/auth-client";
+import DarkModeButton from "./darkModeButton";
 
 export default function Navbar() {
+  const { data: session } = authClient.useSession();
   const handleSignOut = async () => {
     await authClient.signOut();
     window.location.href = "/";
@@ -24,23 +26,44 @@ export default function Navbar() {
               TillerFruits
             </Typography>
           </NavLink>
-          <div className="flex gap-2">
+          <div className="flex gap-5 min-w-1/3 justify-end items-center">
             <NavLink
               to="/home"
               style={{ color: "inherit", textDecoration: "none" }}
             >
               <Button color="inherit">Home</Button>
             </NavLink>
-            <NavLink
-              to="/login"
-              style={{ color: "inherit", textDecoration: "none" }}
-            >
-              <Button color="inherit">Login</Button>
-            </NavLink>
+            {!session?.user ? (
+              <div className="flex gap-2">
+                <NavLink
+                  to="/login"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  <Button color="inherit">Login</Button>
+                </NavLink>
+                <NavLink
+                  to="/login"
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  <Button color="inherit">Sign Up</Button>
+                </NavLink>
+              </div>
+            ) : (
+              <Button color="inherit" onClick={handleSignOut}>
+                Sign Out
+              </Button>
+            )}
 
             <Button color="inherit" onClick={handleSignOut}>
               Sign Out
             </Button>
+
+            <NavLink to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+              <Button color="inherit">Sign Up</Button>
+            </NavLink>
+        
+              <DarkModeButton />
+              
           </div>
         </Toolbar>
       </AppBar>
