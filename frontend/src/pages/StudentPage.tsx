@@ -3,7 +3,6 @@ import useAssignments from "../utils/useAssignments";
 
 function StudentPage() {
   const allUserAssignments = useAssignments();
-  console.log(allUserAssignments);
   return (
     <main
       id="mainWrapperWithFooter"
@@ -18,16 +17,9 @@ function StudentPage() {
       </div>
 
       <section id="NewFileList" className="w-1/3 border-2 rounded-2xl p-2 px-5">
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
-        <p>THIS IS A FILEFILEFILEFILE WOWOWOWOWOWOWO</p>
+        {allUserAssignments.map((assignment) => (
+          <h1>{assignment.originalName}</h1>
+        ))}
       </section>
       <Footer />
     </main>

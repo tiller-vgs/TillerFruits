@@ -1,5 +1,6 @@
 import { File } from "../generated/prisma/browser";
 import { prisma } from "../lib/db";
+import { toFrontendFile } from "../mappers/file.mapper";
 import { fetchUserAssignments } from "./assignmentService";
 
 function convertFilesIntoFrontendSafeFiles(backendFileArray: File[]) {
@@ -16,19 +17,15 @@ function convertFilesIntoFrontendSafeFiles(backendFileArray: File[]) {
 
 //all files. unsure why we're using it. if you know please comment.
 export async function fetchAllFiles() {
-  const allFiles = await prisma.file.findMany();
-
-  const safeFiles = convertFilesIntoFrontendSafeFiles(allFiles);
-
-  console.log("FetchAllFiles, handler answered:" + allFiles);
-  return safeFiles;
+  const files = await prisma.file.findMany();
+  return files.map(toFrontendFile);
 }
 
 //for user assignments
 export async function fetchUserFiles(userId: string) {
   const userAssignments = await fetchUserAssignments(userId);
 
-  const fileIds = userAssignments.map((a) => a.id);
+  const fileIds = userAssignments.map((a) => a.fileId);
   const assignmentFiles = await prisma.file.findMany({
     where: {
       id: {
@@ -37,20 +34,26 @@ export async function fetchUserFiles(userId: string) {
     },
   });
 
-  console.log("FetchUserFiles, handler answered:" + assignmentFiles);
-  const safeFiles = convertFilesIntoFrontendSafeFiles(assignmentFiles);
-
-  return safeFiles;
+  return assignmentFiles.map(toFrontendFile);
 }
 
-//for singular file pages and preview in split screen
-export async function fetchSingularFile(fileId: number) {
+//for singular file data in frontend
+export async function fetchSingularFileFrontend(fileId: number) {
   const file = await prisma.file.findFirst({
     where: {
       id: fileId,
     },
   });
+  if (!file) return null;
 
-  console.log("FetchSingularFile, handler answered:" + file);
-  return file;
+  return toFrontendFile(file);
+}
+
+//for backend that needs extra file information
+export async function fetchInternalFile(fileId: number) {
+  const files = await prisma.file.findFirst({
+    where: { id: fileId },
+  });
+
+  return files;
 }

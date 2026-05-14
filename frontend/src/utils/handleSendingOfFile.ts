@@ -23,6 +23,7 @@ async function handleSendingOfFile({
     const response = await fetch("http://localhost:5000/api/v1/files/upload", {
       method: "POST",
       body: formData,
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -34,7 +35,6 @@ async function handleSendingOfFile({
       return;
     }
 
-    console.log("File submitted:", addedFile.file);
     setErrorMessage("");
     setUploadStatus("success");
   } catch (error: any) {

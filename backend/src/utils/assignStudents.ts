@@ -1,17 +1,16 @@
 import { prisma } from "../lib/db";
 import { User } from "../generated/prisma/browser";
-import { fetchSingularFile } from "../services/fileService";
+import { fetchInternalFile } from "../services/fileService";
 import generateRandomDisplayName from "./generateRandomDisplayName";
 
 export default async function assignStudentsToReviewFile(fileId: number) {
   const studentList: User[] = await prisma.user.findMany({
-    //there is no role yet, so comment it out if youre gonna run backend
     where: {
       role: "student",
     },
   });
 
-  const fileToAssign = await fetchSingularFile(fileId);
+  const fileToAssign = await fetchInternalFile(fileId);
 
   if (!fileToAssign) {
     throw new Error("File not found");
@@ -24,10 +23,7 @@ export default async function assignStudentsToReviewFile(fileId: number) {
     .sort(() => Math.random() - 0.5)
     .slice(0, maxAssignedStudents);
 
-  //then insert both student id's and fileid into assignement table. do it one by one, or through map/foreach.
-  // each student should have their own object in assignments, example:
-  // assignment 1: fileid4, studentid1, createdat:12/12/12
-  // assignment2: fileid4, studentid2, created at 12/12/12
+  const studentAmount = randomStudents.length;
 
   const assignments = await prisma.assignment.createMany({
     data: await Promise.all(
@@ -42,8 +38,5 @@ export default async function assignStudentsToReviewFile(fileId: number) {
 
   console.log(assignments);
 
-  return {
-    fileId,
-    assignedStudents: randomStudents.length,
-  };
+  return { fileId, studentAmount };
 }

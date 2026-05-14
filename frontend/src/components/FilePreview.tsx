@@ -5,7 +5,17 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 
-function FilePreview({ file }: { file: File | undefined }) {
+type FilePreviewProps =
+  | {
+      file: File;
+      fileURL?: never;
+    }
+  | {
+      fileURL: string;
+      file?: never;
+    };
+
+function FilePreview(props: FilePreviewProps) {
   pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     "pdfjs-dist/build/pdf.worker.min.mjs",
     import.meta.url,
@@ -19,8 +29,11 @@ function FilePreview({ file }: { file: File | undefined }) {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   return (
-    <div className="max-h-[50dvh] overflow-y-auto flex flex-col gap-0 p-0 border-black border-2 rounded-2xl">
-      <Document file={file || ""} onLoadSuccess={onDocumentLoadSuccess}>
+    <div>
+      <Document
+        file={"file" in props ? props.file : props.fileURL}
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
         <Page
           className={"pdf-page"}
           pageNumber={currentPage}

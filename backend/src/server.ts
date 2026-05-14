@@ -1,4 +1,5 @@
 import express from "express";
+
 import { Pool } from "pg";
 import cors from "cors";
 import multer from "multer";
@@ -8,9 +9,10 @@ import { auth } from "./utils/auth";
 import assignStudentsToReviewFile from "./utils/assignStudents";
 import {
   fetchAllFiles,
-  fetchSingularFile,
+  fetchSingularFileFrontend,
   fetchUserFiles,
 } from "./services/fileService";
+import { getFilePath } from "./utils/getFilePath";
 
 const app = express();
 const PORT = 5000;
@@ -85,7 +87,7 @@ app.get("/api/v1/admin/files", async (req, res) => {
 //for file previews, split screens, singular file pages
 app.get("/api/v1/files/:id", async (req, res) => {
   const id = req.params.id;
-  const file = await fetchSingularFile(Number(id));
+  const file = await fetchSingularFileFrontend(Number(id));
   if (!file) {
     return res.status(404).json({
       success: false,
@@ -99,20 +101,43 @@ app.get("/api/v1/files/:id", async (req, res) => {
 });
 
 //for sending of files ADMIN
-app.post("/api/v1/admin/files/:id/distribute", (req, res) => {
+app.post("/api/v1/admin/files/:id/distribute", async (req, res) => {
   const id = req.params.id;
 
   try {
-    const assigningResult = assignStudentsToReviewFile(Number(id));
+    const { fileId, studentAmount } = await assignStudentsToReviewFile(
+      Number(id),
+    );
+
+    if (!fileId) throw new Error("No file found");
 
     res.status(200).json({
       success: true,
-      data: assigningResult,
+      message: `File sent to ${studentAmount} students`,
+      data: { fileId, studentAmount },
     });
   } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+});
+
+//file preview ADMIN/ auth student
+app.get("/api/v1/files/:id/content", async (req, res) => {
+  try {
+    const fileId = Number(req.params.id);
+    const { fullFilePath, mimeType } = await getFilePath(fileId);
+
+    res.setHeader("Content-Type", mimeType);
+    res.setHeader("Content-Disposition", "inline");
+    return res.sendFile(fullFilePath);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Could not fetch file",
     });
   }
 });

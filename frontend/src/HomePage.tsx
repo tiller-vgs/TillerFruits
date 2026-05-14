@@ -17,7 +17,7 @@ function HomePage() {
 
   const acceptedFileFormats: string[] = [".pdf", ".docx"];
   const fileIsPdf: boolean = addedFile?.type === "application/pdf";
-
+  const file = addedFile?.file;
   useEffect(() => {
     if (uploadStatus !== "success") return;
 
@@ -35,7 +35,7 @@ function HomePage() {
         className={`flex flex-col gap-1 items-center ${clickedPreview && fileIsPdf ? "mt-10" : "mt-20"}`}
       >
         {clickedPreview &&
-          (!fileIsPdf ? (
+          (!fileIsPdf && !file ? (
             <Alert
               severity="error"
               sx={{ fontSize: "1.15rem", marginBottom: 2 }}
@@ -43,7 +43,11 @@ function HomePage() {
               Forhåndsvisningsfunksjonen er bare tilgjengelig for PDF-filer.
             </Alert>
           ) : (
-            <FilePreview file={addedFile?.file} />
+            file && (
+              <div className="max-h-[50dvh] overflow-y-auto flex flex-col gap-0 p-0 border-black border-2 rounded-2xl">
+                <FilePreview file={file} />
+              </div>
+            )
           ))}
 
         {errorMessage && (

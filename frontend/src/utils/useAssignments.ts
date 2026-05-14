@@ -19,7 +19,6 @@ export default function useAssignments() {
         }
 
         const assignmentData = await res.json();
-
         setAssignments(assignmentData.data);
       } catch (error) {
         console.error(error);
