@@ -4,7 +4,7 @@ import cors from "cors";
 import multer from "multer";
 import uploadFile from "./utils/uploadFile";
 import { getFiles } from "./utils/dbHelper";
-import { toNodeHandler } from "better-auth/node";
+import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth";
 //import assignStudentsToReviewFile from "./utils/assignStudents";
 
@@ -31,6 +31,18 @@ const pool = new Pool({
   password: "1234",
   database: "mydb",
 });
+
+async function requireLogin(req, res, next) {
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
+
+  if (!session) {
+    return res.status(401).json({ message: "Logg inn, hmph." });
+  }
+
+  next();
+}
 
 app.all("/api/auth/{*any}", toNodeHandler(auth));
 
@@ -91,23 +103,23 @@ app.get("/api/v1/files/:id", (req, res) => {
   });
 });
 
-app.post("/api/v1/files/:id/distribute", (req, res) => {
-  const id = req.params.id;
+// app.post("/api/v1/files/:id/distribute", (req, res) => {
+//   const id = req.params.id;
 
-  try {
-    const assigningResult = assignStudentsToReviewFile(id);
+//   try {
+//     const assigningResult = assignStudentsToReviewFile(id);
 
-    res.status(200).json({
-      success: true,
-      data: assigningResult,
-    });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-});
+//     res.status(200).json({
+//       success: true,
+//       data: assigningResult,
+//     });
+//   } catch (error: any) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message,
+//     });
+//   }
+// });
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

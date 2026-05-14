@@ -49,9 +49,14 @@ export default function Navbar() {
                 </NavLink>
               </div>
             ) : (
-              <Button color="inherit" onClick={handleSignOut}>
-                Sign Out
-              </Button>
+              <div className="flex gap-2">
+                <NavLink to="/admin" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <Button color="inherit">Admin</Button>
+                </NavLink>
+                <Button color="inherit" onClick={handleSignOut}>
+                  Sign Out
+                </Button>
+              </div>
             )}
 
             <Button color="inherit" onClick={handleSignOut}>
