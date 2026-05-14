@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 import FileCard from "./FileCard";
+import {
+  Box,
+  Typography,
+  Grid,
+  CircularProgress,
+  Alert,
+  Divider,
+} from "@mui/material";
 
 interface FileItem {
   id: string;
@@ -30,28 +38,36 @@ function FileList() {
   }
 
   if (loading) {
-    return <div>Laster...</div>;
+    return (
+      <Box display="flex" justifyContent="center" py={6}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <Alert severity="error">{error}</Alert>;
   }
 
   return (
-    <div>
-      <h2>Du har {files.length} filer å sende videre:</h2>
-      <ul>
+    <Box>
+      <Typography variant="h6" fontWeight="medium" gutterBottom>
+        Filer å sende videre ({files.length})
+      </Typography>
+      <Grid container spacing={3} mb={5}>
         {files.map((file) => (
-          <li key={file.id}>
+          <Grid key={file.id}>
             <FileCard file={file} />
-          </li>
+          </Grid>
         ))}
-      </ul>
+      </Grid>
 
-      <hr />
+      <Divider sx={{ mb: 3 }} />
 
-      <h2>Oppgavehistorikk:</h2>
-    </div>
+      <Typography variant="h6" fontWeight="medium" color="text.secondary">
+        Oppgavehistorikk
+      </Typography>
+    </Box>
   );
 }
 
