@@ -14,18 +14,35 @@ function SubmitFileButton({
   return (
     <Button
       variant="outlined"
-      sx={{
-        mt: "1rem",
-        fontSize: "1.1rem",
-        mb: "0.5rem",
-        padding: "0.6rem 1.5rem",
-        borderRadius: "10px",
-        textTransform: "none",
-        backgroundColor: "#1F1300",
-        color: "#F6F7F8",
-        transition: "0.2s ease",
-        ":hover": { backgroundColor: "#6D5A72", transform: "translateY(-2px)" },
-      }}
+      sx={[
+        (theme) => ({
+          border: "2px solid",
+          color: theme.palette.secondary.light,
+          fontSize: "1.3rem",
+          paddingX: "1.5rem",
+          borderRadius: "1rem",
+          textTransform: "none",
+          transition: "0.2s ease",
+          ":hover": {
+            transform: "translateY(-2px)",
+            boxShadow: theme.shadows[3],
+            backgroundColor: theme.palette.secondary.dark,
+            borderColor: "transparent",
+            color: "#fff",
+          },
+        }),
+        (theme) =>
+          theme.applyStyles("dark", {
+            color: "#fff",
+            backgroundColor: "transparent",
+            border: "2px solid",
+            "&:hover": {
+              backgroundColor: "transparent",
+              borderColor: theme.palette.secondary.main,
+              color: theme.palette.secondary.main,
+            },
+          }),
+      ]}
       onClick={() =>
         handleSendingOfFile({ addedFile, setUploadStatus, setErrorMessage })
       }
