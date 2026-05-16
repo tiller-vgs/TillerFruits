@@ -4,7 +4,7 @@ import { Pool } from "pg";
 import cors from "cors";
 import multer from "multer";
 import uploadFile from "./utils/uploadFile";
-import { toNodeHandler } from "better-auth/node";
+import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth";
 import assignStudentsToReviewFile from "./utils/assignStudents";
 import {
@@ -40,6 +40,18 @@ const pool = new Pool({
   password: "1234",
   database: "mydb",
 });
+
+async function requireLogin(req, res, next) {
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
+
+  if (!session) {
+    return res.status(401).json({ message: "Logg inn, hmph." });
+  }
+
+  next();
+}
 
 app.all("/api/auth/{*any}", toNodeHandler(auth));
 
@@ -87,7 +99,7 @@ app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
 });
 
 //why are we using this again... are we using this??? do we need this?? ill let it sit under admin for now.
-app.get("/api/v1/admin/files", async (req, res) => {
+app.get("/api/v1/admin/files", requireLogin, async (req, res) => {
   try {
     const allFiles = await fetchAllFiles();
 
