@@ -174,7 +174,7 @@ app.post(
 );
 
 //file preview ADMIN/ auth student
-app.get("/api/v1/files/:id/content", requireLogin, async (req, res) => {
+app.get("/api/v1/files/:id/content", async (req, res) => {
   try {
     const fileId = Number(req.params.id);
     const { fullFilePath, mimeType } = await getFilePath(fileId);

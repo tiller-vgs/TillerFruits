@@ -14,6 +14,7 @@ export default async function handleSendingToStudents({
       `http://localhost:5000/api/v1/admin/files/${fileId}/distribute`,
       {
         method: "POST",
+        credentials: "include",
       },
     );
 
