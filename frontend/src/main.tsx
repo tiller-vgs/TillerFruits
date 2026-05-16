@@ -10,9 +10,10 @@ import AdminPage from "./pages/AdminPage.tsx";
 import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 
-import { ThemeProvider, createTheme, } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import StudentPage from "./pages/StudentPage.tsx";
+import Footer from "./components/Footer.tsx";
 
 const theme = createTheme({
   colorSchemes: {
@@ -22,21 +23,25 @@ const theme = createTheme({
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-   <ThemeProvider theme={theme} defaultMode="light">
+    <ThemeProvider theme={theme} defaultMode="light">
       <CssBaseline />
-     
+
       <BrowserRouter>
         <Navbar />
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/upload" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
+
           <Route element={<ProtectedRoutes />}>
+            <Route path="/upload" element={<HomePage />} />
+            <Route path="/me/assignments" element={<StudentPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/file/:id" element={<AssignmentDistribute />} />
           </Route>
         </Routes>
+
+        <Footer />
       </BrowserRouter>
     </ThemeProvider>
   </StrictMode>,

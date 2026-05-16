@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { FileTypeFromDB } from "../../types/types";
-import checkAuth from "./checkAuth";
 
 export default function useAssignments() {
   const navigate = useNavigate();
@@ -12,13 +11,6 @@ export default function useAssignments() {
   useEffect(() => {
     async function fetchAssignment() {
       try {
-        const session = await checkAuth(navigate);
-
-        if (!session) {
-          console.log("Auth failed.");
-          return;
-        }
-
         const res = await fetch("http://localhost:5000/api/v1/me/assignments", {
           credentials: "include",
         });

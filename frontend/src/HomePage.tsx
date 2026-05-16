@@ -2,13 +2,10 @@ import FormHelperText from "@mui/material/FormHelperText";
 import { useEffect, useRef, useState } from "react";
 import type { UploadFileType, UploadStatus } from "../types/types";
 import UploadButton from "./components/UploadButton";
-import Footer from "./components/Footer";
 import SubmitFileButton from "./components/SubmitFileButton";
 import FilePreview from "./components/FilePreview";
 import FilePreviewButton from "./components/FilePreviewButton";
 import Alert from "@mui/material/Alert";
-import checkAuth from "./utils/checkAuth";
-import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -20,7 +17,6 @@ function HomePage() {
   const acceptedFileFormats: string[] = [".pdf", ".docx"];
   const fileIsPdf: boolean = addedFile?.type === "application/pdf";
   const file = addedFile?.file;
-  const navigate = useNavigate();
 
   // useeffect for changing uploading status
   useEffect(() => {
@@ -29,18 +25,10 @@ function HomePage() {
     setErrorMessage("");
   }, [uploadStatus]);
 
-  // useeffect for verification of user
-  useEffect(() => {
-    async function verify() {
-      await checkAuth(navigate);
-    }
-    verify();
-  }, [navigate]);
-
   return (
     <main
       id="mainWrapperWithFooter"
-      className="flex flex-col min-h-[calc(100dvh-65px)] items-center"
+      className="flex flex-col min-h-[calc(100dvh-165px)] items-center"
     >
       <div
         id="subMainWrapperNoFooter"
@@ -117,7 +105,6 @@ function HomePage() {
           />
         )}
       </div>
-      <Footer />
     </main>
   );
 }
