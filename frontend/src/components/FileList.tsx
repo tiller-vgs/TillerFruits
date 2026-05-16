@@ -8,13 +8,8 @@ import {
   Alert,
   Divider,
 } from "@mui/material";
+import type { FileItem } from "../../types/types";
 
-interface FileItem {
-  id: string;
-  extension: string;
-  originalName: string;
-  displayName: string;
-}
 
 function FileList() {
   const [files, setFiles] = useState<FileItem[]>([]);
@@ -27,7 +22,9 @@ function FileList() {
 
   async function fetchFiles() {
     try {
-      const response = await fetch("http://localhost:5000/api/v1/files");
+      const response = await fetch("http://localhost:5000/api/v1/admin/files", {
+        credentials: "include",
+      });
       const data = await response.json();
       setFiles(data.data);
       setLoading(false);

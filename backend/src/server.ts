@@ -4,7 +4,6 @@ import { Pool } from "pg";
 import cors from "cors";
 import multer from "multer";
 import uploadFile from "./utils/uploadFile";
-import { getFiles } from "./utils/dbHelper";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth";
 import assignStudentsToReviewFile from "./utils/assignStudents";
@@ -100,7 +99,7 @@ app.post("/api/v1/files/upload", upload.single("file"), async (req, res) => {
 });
 
 //why are we using this again... are we using this??? do we need this?? ill let it sit under admin for now.
-app.get("/api/v1/admin/files", async (req, res) => {
+app.get("/api/v1/admin/files", requireLogin, async (req, res) => {
   try {
     const allFiles = await fetchAllFiles();
 

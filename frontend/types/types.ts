@@ -15,4 +15,11 @@ export type FileTypeFromDB = {
   createdAt: string;
 };
 
+export type FileItem = {
+  id: string;
+  extension: string;
+  originalName: string;
+  displayName: string;
+}
+
 export type UploadStatus = "idle" | "success" | "error" | "loading";
