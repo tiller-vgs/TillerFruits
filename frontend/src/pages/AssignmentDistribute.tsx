@@ -58,21 +58,21 @@ export default function AssignmentDistribute() {
   ];
 
   return (
-    <main className="flex min-h-[calc(100dvh-165px)] flex-col items-center px-15 py-8">
+    <main className="flex min-h-[calc(100dvh-165px)] flex-col items-center px-3 md:px-15 py-8">
       <div className="flex w-full flex-col gap-8">
-        <header className="border-b border-slate-300 pb-6">
+        <header className="border-b border-slate-300 pb-2 md:pb-6">
           {!file ? (
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-3xl md:text-4xl font-bold">
               Ugyldig ID. Kan ikke finne en fil med denne ID-en
             </h1>
           ) : (
             <div className="flex items-start gap-4">
-              <div className="rounded-2xl bg-bright-lemon/70 p-3 text-coffee-bean">
-                <DescriptionOutlinedIcon fontSize="large" />
+              <div className="rounded-2xl bg-bright-lemon/70 p-2 md:p-3 text-2xl md:text-4xl text-coffee-bean">
+                <DescriptionOutlinedIcon fontSize="inherit" />
               </div>
 
               <div>
-                <h1 className="text-4xl font-bold">
+                <h1 className="text-2xl md:text-4xl font-bold">
                   [{file?.extension.toUpperCase()}]{" "}
                   {file?.originalName.split(".")[0]}
                 </h1>
@@ -92,7 +92,7 @@ export default function AssignmentDistribute() {
             sx={{
               fontSize: "1rem",
               borderRadius: "0.5rem",
-              width: "30%",
+              width: { xs: "full", md: "30%" },
             }}
           >
             {errorMessage}
@@ -100,7 +100,7 @@ export default function AssignmentDistribute() {
         )}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
-          <section className="p-6">
+          <section className="p-3 md:p-6">
             <div className="mb-5 border-b border-slate-300 pb-4">
               <h2 className="text-2xl font-semibold">Forhåndsvisning</h2>
 
@@ -110,7 +110,7 @@ export default function AssignmentDistribute() {
             </div>
 
             {file && isPdf ? (
-              <div className="max-h-[75dvh] overflow-y-auto rounded-2xl border border-slate-300">
+              <div className="max-h-[105dvh] md:max-h-[75dvh] overflow-y-auto rounded-2xl border border-slate-300">
                 <FilePreview
                   fileURL={`http://localhost:5000/api/v1/files/${file.id}/content`}
                 />
@@ -128,7 +128,7 @@ export default function AssignmentDistribute() {
             ) : null}
           </section>
 
-          <section className="p-6">
+          <section className="p-3 md:p-6">
             <div className="mb-5 border-b border-slate-300 pb-4">
               <div className="flex items-center gap-3">
                 <div>

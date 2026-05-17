@@ -24,8 +24,8 @@ function SendAssignmentButton({
       }
       sx={[
         (theme) => ({
-          border: "2px solid",
-          color: theme.palette.secondary.main,
+          color: "#fff",
+          backgroundColor: theme.palette.secondary.dark,
           fontSize: "1.1rem",
           marginTop: "1rem",
           paddingX: "1.5rem",
@@ -34,20 +34,20 @@ function SendAssignmentButton({
           textTransform: "none",
           ":hover": {
             boxShadow: theme.shadows[3],
-            backgroundColor: theme.palette.secondary.dark,
-            borderColor: "transparent",
-            color: "#fff",
+            backgroundColor: "transparent",
+            border: "2px solid",
+            color: theme.palette.secondary.main,
           },
         }),
         (theme) =>
           theme.applyStyles("dark", {
-            backgroundColor: "transparent",
-            border: "2px solid",
-            borderColor: theme.palette.secondary.main,
-            color: theme.palette.secondary.main,
+            backgroundColor: theme.palette.secondary.dark,
+            color: "#fff",
             "&:hover": {
-              backgroundColor: theme.palette.secondary.dark,
-              color: "#fff",
+              color: theme.palette.secondary.main,
+              backgroundColor: "transparent",
+              borderColor: theme.palette.secondary.main,
+              border: "2px solid",
             },
           }),
       ]}
