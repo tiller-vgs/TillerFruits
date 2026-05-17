@@ -4,7 +4,7 @@ import "./index.css";
 import HomePage from "./pages/HomePage.tsx";
 import Navbar from "./components/Navbar.tsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./landingPage";
+import LandingPage from "./pages/landingPage.tsx";
 import Login from "./pages/Login.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";

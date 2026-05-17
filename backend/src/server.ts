@@ -195,13 +195,14 @@ app.get("/api/v1/files/:id/content", async (req, res) => {
 app.get("/api/v1/me/assignments", requireLogin, async (req, res) => {
   try {
     const userId = req.session.user.id;
-    const assignmentFiles = await fetchUserFiles(userId);
-    const myAssignmentFiles = await fetchAllFilesByIdFrontend(userId);
+    const { assignmentFiles, totalAssignmentFiles } =
+      await fetchUserFiles(userId);
+    const { files, totalFiles } = await fetchAllFilesByIdFrontend(userId);
 
     res.status(200).json({
       success: true,
       message: "Assignments fetched successfully",
-      data: { assignmentFiles, myAssignmentFiles },
+      data: { assignmentFiles, totalAssignmentFiles, files, totalFiles },
     });
   } catch (error: any) {
     res.status(500).json({

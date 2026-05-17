@@ -10,7 +10,12 @@ import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
 function StudentPage() {
-  const { newAssignments, myAssignments } = useAssignments();
+  const {
+    newAssignments,
+    newAssignmentsTotal,
+    myAssignments,
+    myAssignmentsTotal,
+  } = useAssignments();
   const navigate = useNavigate();
 
   const secondaryTextSx = [
@@ -108,9 +113,7 @@ function StudentPage() {
                 NYE OPPGAVER:
               </Typography>
 
-              <h2 className="mt-2 text-4xl font-bold">
-                {newAssignments.length}
-              </h2>
+              <h2 className="mt-2 text-4xl font-bold">{newAssignmentsTotal}</h2>
 
               <Typography sx={[...secondaryTextSx, { marginTop: "0.5rem" }]}>
                 Filer som trenger tilbakemelding
@@ -127,9 +130,7 @@ function StudentPage() {
                 DINE OPPLASTINGER:
               </Typography>
 
-              <h2 className="mt-2 text-4xl font-bold">
-                {myAssignments.length}
-              </h2>
+              <h2 className="mt-2 text-4xl font-bold">{myAssignmentsTotal}</h2>
 
               <Typography sx={[...secondaryTextSx, { marginTop: "0.5rem" }]}>
                 Filer du selv har sendt inn
@@ -211,7 +212,7 @@ function StudentPage() {
 
             <div className="flex flex-col gap-3">
               {myAssignments.length === 0 ? (
-                <div className="rounded-2xl border border-slate-300 px-5 py-8 text-center">
+                <div className="px-5 py-8 text-center">
                   <Typography sx={secondaryTextSx}>
                     Du har ikke lastet opp noen filer enda.
                   </Typography>

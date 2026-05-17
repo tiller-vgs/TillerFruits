@@ -6,7 +6,9 @@ export default function useAssignments() {
   const navigate = useNavigate();
 
   const [newAssignments, setNewAssignments] = useState<FileTypeFromDB[]>([]);
+  const [newAssignmentsTotal, setNewAssignmentsTotal] = useState<number>(0);
   const [myAssignments, setMyAssignments] = useState<FileTypeFromDB[]>([]);
+  const [myAssignmentsTotal, setMyAssignmentsTotal] = useState<number>(0);
 
   useEffect(() => {
     async function fetchAssignment() {
@@ -17,7 +19,10 @@ export default function useAssignments() {
 
         const assignmentData = await res.json();
         setNewAssignments(assignmentData.data.assignmentFiles);
-        setMyAssignments(assignmentData.data.myAssignmentFiles);
+        setNewAssignmentsTotal(assignmentData.data.totalAssignmentFiles);
+        setMyAssignments(assignmentData.data.files);
+        setMyAssignmentsTotal(assignmentData.data.totalFiles);
+        console.log(newAssignmentsTotal);
       } catch (error) {
         console.error(error);
       }
@@ -25,5 +30,10 @@ export default function useAssignments() {
     fetchAssignment();
   }, [navigate]);
 
-  return { newAssignments, myAssignments };
+  return {
+    newAssignments,
+    newAssignmentsTotal,
+    myAssignments,
+    myAssignmentsTotal,
+  };
 }
