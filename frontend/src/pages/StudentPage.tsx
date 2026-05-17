@@ -28,8 +28,8 @@ function StudentPage() {
     (theme: any) => ({
       backgroundColor: alpha(theme.palette.secondary.light, 0.3),
       color: theme.palette.secondary.dark,
-      fontWeight: 600,
       fontSize: "0.9rem",
+      fontWeight: 600,
       paddingY: "0.2rem",
       paddingX: "1.5rem",
       borderRadius: "0.75rem",
@@ -41,7 +41,6 @@ function StudentPage() {
         color: "#fff",
       },
     }),
-
     (theme: any) =>
       theme.applyStyles("dark", {
         color: "#000",
@@ -86,7 +85,7 @@ function StudentPage() {
   ];
 
   return (
-    <main className="flex min-h-[calc(100dvh-165px)] flex-col items-center justify-between px-15 py-8">
+    <main className="flex min-h-[calc(100dvh-165px)] flex-col items-center justify-between xs:px-3 lg:px-15 py-8">
       <div className="flex w-full flex-col gap-8">
         <header className="flex flex-col gap-5 border-b border-slate-300 pb-6">
           <div className="flex flex-col mx-4.5">
@@ -166,7 +165,7 @@ function StudentPage() {
                 newAssignments.map((assignment) => (
                   <div
                     key={assignment.id}
-                    className="flex items-center justify-between rounded-2xl border border-slate-300 px-4 py-4 transition hover:border-dusty-lavender hover:shadow-sm"
+                    className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-300 px-4 py-4 transition hover:border-dusty-lavender hover:shadow-sm"
                   >
                     <div className="flex items-center gap-3">
                       <div className="rounded-xl bg-bright-lemon/70 p-2 text-coffee-bean">
@@ -175,7 +174,6 @@ function StudentPage() {
 
                       <div>
                         <p className="font-medium">{assignment.originalName}</p>
-
                         <Typography sx={secondaryTextSx}>
                           Klar for tilbakemelding
                         </Typography>
@@ -222,7 +220,7 @@ function StudentPage() {
                 myAssignments.map((assignment) => (
                   <div
                     key={assignment.id}
-                    className="flex items-center justify-between rounded-2xl border border-slate-300 px-4 py-4 transition hover:border-sage-green/70 hover:shadow-sm"
+                    className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-300 px-4 py-4 transition hover:border-dusty-lavender hover:shadow-sm"
                   >
                     <div className="flex items-center gap-3">
                       <div className="rounded-xl bg-sage-green p-2 text-coffee-bean">

@@ -37,7 +37,13 @@ function FilePreview(props: FilePreviewProps) {
         <Page
           className={"pdf-page"}
           pageNumber={currentPage}
-          width={window.innerWidth * 0.55}
+          width={
+            window.innerWidth < 640
+              ? window.innerWidth * 0.92
+              : window.innerWidth < 1024
+                ? window.innerWidth * 0.75
+                : window.innerWidth * 0.55
+          }
         />
       </Document>
       <section className="flex items-center justify-center gap-4 my-4">
