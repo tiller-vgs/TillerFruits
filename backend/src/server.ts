@@ -6,16 +6,15 @@ import multer from "multer";
 import uploadFile from "./utils/uploadFile";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth";
-import assignStudentsToReviewFile from "./utils/assignStudents";
+import { assignAllStudents } from "./utils/assignStudents";
 import {
   fetchAllFiles,
   fetchAllFilesByIdFrontend,
-  fetchInternalFile,
   fetchSingularFileFrontend,
   fetchUserFiles,
-  updateFileStatus,
 } from "./services/fileService";
 import { getFilePath } from "./utils/getFilePath";
+import afterUploadSending from "./utils/afterUploadSending";
 
 const app = express();
 const PORT = 5000;
@@ -62,8 +61,9 @@ app.get("/", (req, res) => {
 });
 
 //For students uploading files
+//BUGGED
 app.post(
-  "/api/v1/files/upload",
+  "/api/v1/assignments/:id/upload",
   upload.single("file"),
   requireLogin,
   async (req, res) => {
@@ -75,15 +75,24 @@ app.post(
       });
     }
 
-    const userId = req.session.user.id;
-
     try {
-      const { buffer, originalname } = req.file;
-      await uploadFile(buffer, originalname, userId);
+      const userId = req.session.user.id;
+      const assignmentId = Number(req.params.id);
 
+      const { buffer, originalname } = req.file;
+      const createdFile = await uploadFile(
+        buffer,
+        originalname,
+        userId,
+        assignmentId,
+      );
+
+      const fileId: number = createdFile.id;
+      const results = await afterUploadSending(fileId, assignmentId, userId);
       res.status(200).json({
         success: true,
-        message: "File uploaded successfully",
+        message: "File uploaded and sent successfully",
+        data: results,
       });
     } catch (error: any) {
       res.status(400).json({
@@ -127,51 +136,34 @@ app.get("/api/v1/files/:id", requireLogin, async (req, res) => {
   });
 });
 
-//for sending of files ADMIN
-app.post(
-  "/api/v1/admin/files/:id/distribute",
-  requireLogin,
-  async (req, res) => {
-    const id = Number(req.params.id);
+app.post("/api/v1/admin/create-assignment", async (req, res) => {
+  try {
+    console.log("BODY:", req.body);
 
-    try {
-      //check if file has already been sent
-      const file = await fetchInternalFile(id);
-      if (!file) {
-        return res.status(404).json({
-          success: false,
-          message: "File not found",
-        });
-      }
+    const { assignmentTitle, questions } = req.body;
 
-      if (file.status === "sent") {
-        return res.status(409).json({
-          success: false,
-          message: "File has already been distributed",
-        });
-      }
-
-      // if file is new, assign students and make new assignement
-      const { fileId, studentAmount } = await assignStudentsToReviewFile(
-        Number(id),
-      );
-
-      if (!fileId) throw new Error("No file found");
-      await updateFileStatus(fileId, "sent");
-
-      res.status(200).json({
-        success: true,
-        message: `File sent to ${studentAmount} students`,
-        data: { fileId, studentAmount },
-      });
-    } catch (error: any) {
-      res.status(500).json({
+    if (!assignmentTitle || !questions) {
+      return res.status(400).json({
         success: false,
-        message: error.message,
+        message: "Missing assignmentTitle or questions",
       });
     }
-  },
-);
+
+    const newAssignment = await assignAllStudents(assignmentTitle, questions);
+
+    res.status(200).json({
+      success: true,
+      message: "Created new assignment",
+      data: newAssignment,
+    });
+  } catch (error: any) {
+    console.error("CREATE ASSIGNMENT ERROR:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 //file preview ADMIN/ auth student
 app.get("/api/v1/files/:id/content", async (req, res) => {

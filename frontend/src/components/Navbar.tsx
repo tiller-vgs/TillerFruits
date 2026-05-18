@@ -4,7 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import DarkModeButton from "./darkModeButton";
+import DarkModeButton from "./buttons/darkModeButton";
 
 import { NavLink } from "react-router-dom";
 import { authClient } from "../utils/auth-client";

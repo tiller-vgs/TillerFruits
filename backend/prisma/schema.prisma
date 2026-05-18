@@ -6,8 +6,9 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
 enum Role {
-  student 
+  student
   teacher
   admin
 }
@@ -16,20 +17,24 @@ enum FileStatus {
   new
   sent
 }
+
 model User {
-  id            String    @id
+  id            String   @id
   name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String   @unique
+  emailVerified Boolean  @default(false)
   image         String?
-  role          Role         @default(student)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  files         File[]
-  assignments   Assignment[] 
-  accounts      Account[]
-  sessions      Session[]
-  
+  role          Role     @default(student)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  files               File[]
+  assignments         Assignment[]
+  accounts            Account[]
+  sessions            Session[]
+  assignmentUsers     AssignmentRecipent[]
+  submissions         Submission[]
+  submissionReviewers SubmissionReviewer[]
 
   @@map("user")
 }
@@ -82,38 +87,92 @@ model Verification {
 }
 
 model File {
-  id           Int      @id @default(autoincrement())
-  /// for admins only in case of tracking down who uploaded what, not for user facing features. 
-  /// NEVER use in frontend, only for backend queries. Use displayName for frontend.
-  creatorId    String
-  /// anonymous and regenerates for each new upload even if its the same user.
-  displayName  String @unique
+  id Int @id @default(autoincrement())
+
+  creatorId   String
+  displayName String @unique
+
   originalName String
   savedName    String
-  mimeType     String
-  extension    String
-  fileSize     Int
-  filehash     String
-  status       FileStatus   @default(new)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  creator      User     @relation(fields: [creatorId], references: [id])
-  assignments  Assignment[]
+
+  mimeType  String
+  extension String
+  fileSize  Int
+  filehash  String
+
+  status    FileStatus @default(new)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  creator   User       @relation(fields: [creatorId], references: [id])
+
+  assignmentId Int
+  assignment   Assignment  @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  submission   Submission?
 
   @@index([creatorId])
 }
-model Assignment {
-  id              Int      @id @default(autoincrement())
-  fileId          Int
-  creatorId       String
-  userId          String
-  anonDisplayName String   @unique
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  file            File     @relation(fields: [fileId], references: [id], onDelete: Cascade)
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([fileId])
-  @@index([userId])
+// TEACHER'S ASSIGNMENT
+model Assignment {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+
+  questions   Question[]
+  files       File[]
+  recipents   AssignmentRecipent[] //people to send assignment to
+  creator     User?            @relation(fields: [creatorId], references: [id])
+  creatorId   String?
+  submissions Submission[]
+
   @@map("assignment")
+}
+
+model Question {
+  id           Int    @id @default(autoincrement())
+  title        String
+  assignmentId Int
+
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+}
+
+model AssignmentRecipent {
+  assignmentId    Int
+  userId          String
+
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([assignmentId, userId])
+}
+
+model Submission {
+  id Int @id @default(autoincrement())
+
+  assignmentId Int
+  creatorId    String
+  fileId       Int        @unique
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  creator User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  file File @relation(fields: [fileId], references: [id])
+
+  reviewers SubmissionReviewer[]
+}
+
+model SubmissionReviewer {
+  submissionId Int
+  reviewerId   String
+
+  anonName  String
+  completed Boolean @default(false)
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  reviewer User @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@id([submissionId, reviewerId])
 }

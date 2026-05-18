@@ -1,10 +1,12 @@
 import type { UploadFileType, UploadStatus } from "../../types/types";
 
 async function handleSendingOfFile({
+  assignmentId,
   addedFile,
   setUploadStatus,
   setErrorMessage,
 }: {
+  assignmentId: number
   addedFile: UploadFileType;
   setUploadStatus: React.Dispatch<React.SetStateAction<UploadStatus>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
@@ -20,11 +22,14 @@ async function handleSendingOfFile({
   formData.append("file", addedFile.file);
 
   try {
-    const response = await fetch("http://localhost:5000/api/v1/files/upload", {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    });
+    const response = await fetch(
+      `http://localhost:5000/api/v1/assignments/${assignmentId}/upload`,
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      },
+    );
 
     const data = await response.json();
 
