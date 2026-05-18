@@ -40,7 +40,7 @@ const pool = new Pool({
   password: "1234",
   database: "mydb",
 });
-
+// requres login, checks if a session exists (aka user logged in)
 async function requireLogin(req, res, next) {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
@@ -144,7 +144,7 @@ app.post("/api/v1/admin/files/:id/distribute", async (req, res) => {
         message: "File not found",
       });
     }
-
+    // if file is already sent, return error
     if (file.status === "sent") {
       return res.status(409).json({
         success: false,

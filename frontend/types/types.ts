@@ -12,6 +12,7 @@ export type FileTypeFromDB = {
   originalName: string;
   displayName: string;
   extension: string;
+  status: "new" | "sent";
   createdAt: string;
 };
 
@@ -20,6 +21,7 @@ export type FileItem = {
   extension: string;
   originalName: string;
   displayName: string;
+  status: "new" | "sent";
 }
 
 export type UploadStatus = "idle" | "success" | "error" | "loading";

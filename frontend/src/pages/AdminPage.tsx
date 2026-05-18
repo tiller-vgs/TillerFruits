@@ -1,5 +1,5 @@
 import FileList from "../components/FileList";
-import { Box, Typography, Divider, Container } from "@mui/material";
+import { Typography, Divider, Container } from "@mui/material";
 
 function AdminPage() {
   return (
