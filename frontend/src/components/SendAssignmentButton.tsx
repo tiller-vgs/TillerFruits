@@ -1,27 +1,9 @@
 import Button from "@mui/material/Button";
-import handleDistribution from "../utils/handleDistribution";
 
-function SendAssignmentButton({
-  setIsSent,
-  setStudentAmount,
-  setErrorMessage,
-  fileId,
-}: {
-  setIsSent: React.Dispatch<React.SetStateAction<boolean>>;
-  setStudentAmount: React.Dispatch<React.SetStateAction<number>>;
-  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-  fileId: number;
-}) {
+function SendAssignmentButton() {
   return (
     <Button
-      onClick={() =>
-        handleDistribution({
-          setIsSent,
-          setStudentAmount,
-          setErrorMessage,
-          fileId,
-        })
-      }
+      onClick={() => console.log("trying")}
       sx={[
         (theme) => ({
           color: "#fff",

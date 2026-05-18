@@ -6,7 +6,10 @@ import multer from "multer";
 import uploadFile from "./utils/uploadFile";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth";
-import assignStudentsToReviewFile from "./utils/assignStudents";
+import {
+  assignAllStudents,
+  assignStudentsToReviewFile,
+} from "./utils/assignStudents";
 import {
   fetchAllFiles,
   fetchAllFilesByIdFrontend,
@@ -127,7 +130,7 @@ app.get("/api/v1/files/:id", requireLogin, async (req, res) => {
   });
 });
 
-//for sending of files ADMIN
+//for sending of files BY SYSTEM.
 app.post(
   "/api/v1/admin/files/:id/distribute",
   requireLogin,
@@ -172,6 +175,10 @@ app.post(
     }
   },
 );
+
+app.post("/api/v1/admin/create-assignment", async (req, res) => {
+  const newAssignment = assignAllStudents("Testing", "QuestionList");
+});
 
 //file preview ADMIN/ auth student
 app.get("/api/v1/files/:id/content", async (req, res) => {
