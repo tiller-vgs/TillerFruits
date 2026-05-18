@@ -74,6 +74,7 @@ function HomePage() {
 
               {addedFile && (
                 <SubmitFileButton
+                  assignmentId={1}
                   addedFile={addedFile}
                   setUploadStatus={setUploadStatus}
                   setErrorMessage={setErrorMessage}
