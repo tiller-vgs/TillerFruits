@@ -13,7 +13,11 @@ function FilePreviewButton({
       sx={[
         (theme) => ({
           color: theme.palette.secondary.main,
-          fontSize: "1.15rem",
+          fontSize: {
+            xs: "0.95rem",
+            sm: "1.05rem",
+            md: "1.2rem",
+          },
           padding: "0.3rem",
           paddingX: "1rem",
           borderRadius: "1rem",
@@ -34,7 +38,7 @@ function FilePreviewButton({
           }),
       ]}
     >
-      {!clickedPreview ? "Preview dokumentet" : "Lukk forhåndsvisning"}
+      {!clickedPreview ? "Forhåndsvisning" : "Lukk forhåndsvisning"}
     </Button>
   );
 }
