@@ -5,8 +5,8 @@ import {
   type UploadFileType,
   type UploadStatus,
 } from "../../types/types";
-import UploadButton from "../components/UploadButton";
-import SubmitFileButton from "../components/SubmitFileButton";
+import UploadButton from "../components/buttons/UploadButton";
+import SubmitFileButton from "../components/buttons/SubmitFileButton";
 import FilePreview from "../components/FilePreview";
 import FilePreviewButton from "../components/FilePreviewButton";
 import Alert from "@mui/material/Alert";

@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import type { UseFieldArrayAppend } from "react-hook-form";
-import type { AssignmentFormData } from "./QuestionSchema";
+import type { AssignmentFormData } from "../QuestionSchema";
 
 export default function AddQuestionButton({
   append,
