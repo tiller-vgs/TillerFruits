@@ -1,8 +1,8 @@
 import { prisma } from "../lib/db";
-import { Question, User } from "../generated/prisma/browser";
+import { User } from "../generated/prisma/browser";
 import { fetchInternalFile } from "../services/fileService";
-import generateRandomDisplayName from "./generateRandomDisplayName";
 
+//Generates a couple of random students. Generating is based upon the size of the database.
 export async function assignStudentsToReviewFile(fileId: number) {
   const fileToAssign = await fetchInternalFile(fileId);
   const studentList: User[] = await prisma.user.findMany({
@@ -30,6 +30,8 @@ export async function assignStudentsToReviewFile(fileId: number) {
   return { randomStudents, studentAmount };
 }
 
+// Assigns all students, no generations.
+//Since util is short and only used by admins, it also makes a creation query of the assignment and all the users/students
 export async function assignAllStudents(
   assignmentTitle: string,
   questions: { title: string }[],

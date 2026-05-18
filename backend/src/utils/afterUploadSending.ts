@@ -21,10 +21,13 @@ export default async function afterUploadSending(
   const { randomStudents, studentAmount } =
     await assignStudentsToReviewFile(fileId);
 
+  //generates randomised anonymous names for each recipent
   const anonNames = await Promise.all(
     randomStudents.map(() => generateRandomDisplayName()),
   );
 
+  //the setup of creation looks weird, this is because these are relations.
+  // creates new submission with the file and all different data needed to fulfill requirements
   const uploadedSubmission = await prisma.submission.create({
     data: {
       assignment: {
@@ -48,7 +51,7 @@ export default async function afterUploadSending(
     },
   });
 
-  console.log(uploadedSubmission)
+  console.log(uploadedSubmission);
 
   if (!fileId) throw new Error("No file found");
   await updateFileStatus(fileId, "sent");
