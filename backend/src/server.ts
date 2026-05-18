@@ -9,9 +9,9 @@ import { auth } from "./utils/auth";
 import { assignAllStudents } from "./utils/assignStudents";
 import {
   fetchAllFiles,
-  fetchAllFilesByIdFrontend,
+  fetchAllSubmissionsByCreatorId,
+  fetchAssignedSubmissions,
   fetchSingularFileFrontend,
-  fetchUserFiles,
 } from "./services/fileService";
 import { getFilePath } from "./utils/getFilePath";
 import afterUploadSending from "./utils/afterUploadSending";
@@ -61,7 +61,6 @@ app.get("/", (req, res) => {
 });
 
 //For students uploading files
-//BUGGED
 app.post(
   "/api/v1/assignments/:id/upload",
   upload.single("file"),
@@ -136,6 +135,7 @@ app.get("/api/v1/files/:id", requireLogin, async (req, res) => {
   });
 });
 
+//for teachers/admins to create new assignments
 app.post("/api/v1/admin/create-assignment", async (req, res) => {
   try {
     console.log("BODY:", req.body);
@@ -165,7 +165,7 @@ app.post("/api/v1/admin/create-assignment", async (req, res) => {
   }
 });
 
-//file preview ADMIN/ auth student
+//file preview PUBLIC
 app.get("/api/v1/files/:id/content", async (req, res) => {
   try {
     const fileId = Number(req.params.id);
@@ -183,18 +183,17 @@ app.get("/api/v1/files/:id/content", async (req, res) => {
   }
 });
 
-//for students to see all their assigned files
+//for students to see all their assigned submissions and their own submissions
 app.get("/api/v1/me/assignments", requireLogin, async (req, res) => {
   try {
     const userId = req.session.user.id;
-    const { assignmentFiles, totalAssignmentFiles } =
-      await fetchUserFiles(userId);
-    const { files, totalFiles } = await fetchAllFilesByIdFrontend(userId);
+    const assignedSubmissions = await fetchAssignedSubmissions(userId);
+    const userSubmissions = await fetchAllSubmissionsByCreatorId(userId);
 
     res.status(200).json({
       success: true,
-      message: "Assignments fetched successfully",
-      data: { assignmentFiles, totalAssignmentFiles, files, totalFiles },
+      message: "Assignments and submissions fetched successfully",
+      data: { assignedSubmissions, userSubmissions },
     });
   } catch (error: any) {
     res.status(500).json({

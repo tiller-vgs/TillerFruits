@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { FileTypeFromDB } from "../../types/types";
+import type { FrontendSubmission } from "../../types/types";
 
 export default function useAssignments() {
   const navigate = useNavigate();
 
-  const [newAssignments, setNewAssignments] = useState<FileTypeFromDB[]>([]);
-  const [newAssignmentsTotal, setNewAssignmentsTotal] = useState<number>(0);
-  const [myAssignments, setMyAssignments] = useState<FileTypeFromDB[]>([]);
-  const [myAssignmentsTotal, setMyAssignmentsTotal] = useState<number>(0);
+  const [assignedSubmissions, setAssignedSubmissions] = useState<FrontendSubmission[]>([]);
+  const [mySubmissions, setMySubmissions] = useState<FrontendSubmission[]>([]);
 
   useEffect(() => {
     async function fetchAssignment() {
@@ -18,11 +16,8 @@ export default function useAssignments() {
         });
 
         const assignmentData = await res.json();
-        setNewAssignments(assignmentData.data.assignmentFiles);
-        setNewAssignmentsTotal(assignmentData.data.totalAssignmentFiles);
-        setMyAssignments(assignmentData.data.files);
-        setMyAssignmentsTotal(assignmentData.data.totalFiles);
-        console.log(newAssignmentsTotal);
+        setAssignedSubmissions(assignmentData.data.assignedSubmissions);
+        setMySubmissions(assignmentData.data.userSubmissions);
       } catch (error) {
         console.error(error);
       }
@@ -30,10 +25,5 @@ export default function useAssignments() {
     fetchAssignment();
   }, [navigate]);
 
-  return {
-    newAssignments,
-    newAssignmentsTotal,
-    myAssignments,
-    myAssignmentsTotal,
-  };
+  return { assignedSubmissions, mySubmissions };
 }
