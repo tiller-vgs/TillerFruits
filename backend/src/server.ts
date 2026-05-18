@@ -177,7 +177,32 @@ app.post(
 );
 
 app.post("/api/v1/admin/create-assignment", async (req, res) => {
-  const newAssignment = assignAllStudents("Testing", "QuestionList");
+  try {
+    console.log("BODY:", req.body);
+
+    const { assignmentTitle, questions } = req.body;
+
+    if (!assignmentTitle || !questions) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing assignmentTitle or questions",
+      });
+    }
+
+    const newAssignment = await assignAllStudents(assignmentTitle, questions);
+
+    res.status(200).json({
+      success: true,
+      message: "Created new assignment",
+      data: newAssignment,
+    });
+  } catch (error: any) {
+    console.error("CREATE ASSIGNMENT ERROR:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 //file preview ADMIN/ auth student

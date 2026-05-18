@@ -2,8 +2,9 @@ import { Button, FormHelperText, TextField, Typography } from "@mui/material";
 import { useForm, useFieldArray } from "react-hook-form";
 import SendAssignmentButton from "./SendAssignmentButton";
 import { useState } from "react";
+import { handleSendNewAssignment } from "../utils/handleDistribution";
 
-type FormData = {
+export type AssignmentFormData = {
   assignmentTitle: string;
   questions: {
     title: string;
@@ -12,6 +13,7 @@ type FormData = {
 
 export default function QuestionSchema() {
   const [isSent, setIsSent] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { register, control, handleSubmit } = useForm({
     defaultValues: {
@@ -25,10 +27,6 @@ export default function QuestionSchema() {
     name: "questions",
   });
 
-  function onSubmit(data: FormData) {
-    console.log(data);
-  }
-
   const secondaryTextSx = [
     {
       color: "#62748e",
@@ -39,6 +37,14 @@ export default function QuestionSchema() {
         color: "#90a1b9",
       }),
   ];
+
+  function onSubmit(sendData: AssignmentFormData) {
+    handleSendNewAssignment({
+      sendData,
+      setIsSent,
+      setErrorMessage,
+    });
+  }
 
   return (
     <section className="py-3 md:py-6">
@@ -73,7 +79,10 @@ export default function QuestionSchema() {
               Legg til et spørsmål
             </Button>
 
-            <SendAssignmentButton />
+            <SendAssignmentButton
+            // setIsSent={setIsSent}
+            // setErrorMessage={setErrorMessage}
+            />
 
             {isSent && (
               <FormHelperText sx={{ fontSize: "0.9rem", marginTop: "1rem" }}>
