@@ -4,20 +4,22 @@ import { fetchInternalFile } from "../services/fileService";
 import generateRandomDisplayName from "./generateRandomDisplayName";
 
 export default async function assignStudentsToReviewFile(fileId: number) {
+  const fileToAssign = await fetchInternalFile(fileId);
   const studentList: User[] = await prisma.user.findMany({
     where: {
       role: "student",
+      id: {
+        not: fileToAssign!.creatorId,
+      },
     },
   });
-
-  const fileToAssign = await fetchInternalFile(fileId);
 
   if (!fileToAssign) {
     throw new Error("File not found");
   }
 
   const maxAssignedStudents =
-    studentList.length < 5 ? Math.floor(studentList.length / 2) : 5;
+    studentList.length < 15 ? Math.floor(studentList.length / 2) : 5;
 
   const randomStudents = studentList
     .sort(() => Math.random() - 0.5)

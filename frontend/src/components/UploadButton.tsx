@@ -68,8 +68,12 @@ function UploadButton({
         sx={[
           (theme) => ({
             backgroundColor: "#1F1300",
-            fontSize: "1.25rem",
-            paddingX: "1.5rem",
+            fontSize: {
+              xs: "0.95rem",
+              sm: "1rem",
+              md: "1.2rem",
+            },
+            paddingX: { sm: "1rem", md: "1.5rem" },
             fontWeight: 600,
             borderRadius: "1rem",
             textTransform: "none",

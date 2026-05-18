@@ -1,31 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { FileTypeFromDB } from "../../types/types";
-import checkAuth from "./checkAuth";
 
 export default function useAssignments() {
   const navigate = useNavigate();
 
   const [newAssignments, setNewAssignments] = useState<FileTypeFromDB[]>([]);
+  const [newAssignmentsTotal, setNewAssignmentsTotal] = useState<number>(0);
   const [myAssignments, setMyAssignments] = useState<FileTypeFromDB[]>([]);
+  const [myAssignmentsTotal, setMyAssignmentsTotal] = useState<number>(0);
 
   useEffect(() => {
     async function fetchAssignment() {
       try {
-        const session = await checkAuth(navigate);
-
-        if (!session) {
-          console.log("Auth failed.");
-          return;
-        }
-
         const res = await fetch("http://localhost:5000/api/v1/me/assignments", {
           credentials: "include",
         });
 
         const assignmentData = await res.json();
         setNewAssignments(assignmentData.data.assignmentFiles);
-        setMyAssignments(assignmentData.data.myAssignmentFiles);
+        setNewAssignmentsTotal(assignmentData.data.totalAssignmentFiles);
+        setMyAssignments(assignmentData.data.files);
+        setMyAssignmentsTotal(assignmentData.data.totalFiles);
+        console.log(newAssignmentsTotal);
       } catch (error) {
         console.error(error);
       }
@@ -33,5 +30,10 @@ export default function useAssignments() {
     fetchAssignment();
   }, [navigate]);
 
-  return { newAssignments, myAssignments };
+  return {
+    newAssignments,
+    newAssignmentsTotal,
+    myAssignments,
+    myAssignmentsTotal,
+  };
 }

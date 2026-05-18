@@ -14,15 +14,27 @@ export async function fetchUserFiles(userId: string) {
   const userAssignments = await fetchUserAssignments(userId);
 
   const fileIds = userAssignments.map((a) => a.fileId);
-  const assignmentFiles = await prisma.file.findMany({
-    where: {
-      id: {
-        in: fileIds,
+  const [assignmentFiles, totalAssignmentFiles] = await Promise.all([
+    prisma.file.findMany({
+      take: 7,
+      where: {
+        id: {
+          in: fileIds,
+        },
       },
-    },
-  });
+    }),
 
-  return assignmentFiles.map(toFrontendFile);
+    prisma.assignment.count({
+      where: {
+        userId: userId,
+      },
+    }),
+  ]);
+
+  return {
+    assignmentFiles: assignmentFiles.map(toFrontendFile),
+    totalAssignmentFiles,
+  };
 }
 
 //for singular file data in frontend
@@ -39,14 +51,25 @@ export async function fetchSingularFileFrontend(fileId: number) {
 
 //for all file data in frontend based on creatorID. used in mypage/creatorAssignments
 export async function fetchAllFilesByIdFrontend(creatorid: string) {
-  const files = await prisma.file.findMany({
-    where: {
-      creatorId: creatorid,
-    },
-  });
-  if (!files) return null;
+  const [files, totalFiles] = await Promise.all([
+    prisma.file.findMany({
+      take: 7,
+      where: {
+        creatorId: creatorid,
+      },
+    }),
 
-  return files.map(toFrontendFile);
+    prisma.file.count({
+      where: {
+        creatorId: creatorid,
+      },
+    }),
+  ]);
+
+  return {
+    files: files.map(toFrontendFile),
+    totalFiles,
+  };
 }
 
 //for backend that needs extra file information

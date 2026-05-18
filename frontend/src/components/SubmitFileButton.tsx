@@ -17,9 +17,13 @@ function SubmitFileButton({
       sx={[
         (theme) => ({
           border: "2px solid",
-          color: theme.palette.secondary.light,
-          fontSize: "1.3rem",
-          paddingX: "1.5rem",
+          color: theme.palette.secondary.main,
+          fontSize: {
+            xs: "0.95rem",
+            sm: "1.05rem",
+            md: "1.2rem",
+          },
+          paddingX: { sm: "1rem", md: "1.5rem" },
           borderRadius: "1rem",
           textTransform: "none",
           transition: "0.2s ease",
