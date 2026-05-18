@@ -41,10 +41,6 @@ export async function assignAllStudents(
   });
 
   const studentAmount = studentList.length;
-  const displayNames = await Promise.all(
-    studentList.map(() => generateRandomDisplayName()),
-  );
-
   const assignment = await prisma.assignment.create({
     data: {
       title: assignmentTitle,
@@ -55,9 +51,8 @@ export async function assignAllStudents(
         })),
       },
 
-      users: {
+      recipents: {
         create: studentList.map((s, i) => ({
-          anonDisplayName: displayNames[i],
           user: {
             connect: { id: s.id },
           },

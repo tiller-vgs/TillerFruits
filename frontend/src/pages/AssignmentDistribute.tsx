@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import QuestionSchema from "../components/QuestionSchema";
+import { secondaryTextSx } from "../../types/types";
 
 function AssignmentDistribute() {
   return (
@@ -8,13 +9,7 @@ function AssignmentDistribute() {
         <header className="border-b border-slate-300 pb-2">
           <h1 className="text-4xl font-bold mb-2">Lag ny oppgave</h1>
 
-          <Typography
-            sx={{
-              color: "#62748e",
-              fontSize: "0.9rem",
-              marginTop: "0.3rem",
-            }}
-          >
+          <Typography sx={[...secondaryTextSx, { marginTop: "0.3rem" }]}>
             Lag spørsmål/vurderingskriterier og publiser oppgaven for klassen
             din
           </Typography>

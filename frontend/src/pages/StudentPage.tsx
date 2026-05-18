@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 
 import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { secondaryTextSx } from "../../types/types";
 
 function StudentPage() {
   const {
@@ -17,17 +18,6 @@ function StudentPage() {
     myAssignmentsTotal,
   } = useAssignments();
   const navigate = useNavigate();
-
-  const secondaryTextSx = [
-    {
-      color: "#62748e",
-      fontSize: "0.9rem",
-    },
-    (theme: any) =>
-      theme.applyStyles("dark", {
-        color: "#90a1b9",
-      }),
-  ];
 
   const openButtonSx = [
     (theme: any) => ({

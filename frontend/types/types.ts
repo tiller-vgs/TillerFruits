@@ -20,6 +20,17 @@ export type FileItem = {
   extension: string;
   originalName: string;
   displayName: string;
-}
+};
 
 export type UploadStatus = "idle" | "success" | "error" | "loading";
+
+export const secondaryTextSx = [
+  {
+    color: "#62748e",
+    fontSize: "0.9rem",
+  },
+  (theme: any) =>
+    theme.applyStyles("dark", {
+      color: "#90a1b9",
+    }),
+];
