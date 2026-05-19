@@ -26,8 +26,6 @@ const ADMIN_ROLES = ["teacher", "admin"];
 export default function Navbar() {
   const { data: session } = authClient.useSession() as { data: Session | null };
   const isAdminOrTeacher = ADMIN_ROLES.includes(session?.user?.role as string);
-  console.log("session:", session);
-  console.log("session:", session);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const handleSignOut = async () => {
     await authClient.signOut();
