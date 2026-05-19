@@ -52,6 +52,25 @@ export type FrontendSubmission = {
   };
 };
 
+export type FrontendAssignment = {
+  id: number;
+  title: string;
+  questions: {
+    id: number;
+    title: string;
+  }[];
+};
+
+export type RecipientAssignment = {
+  id: number;
+  title: string;
+  questions: {
+    id: number;
+    title: string;
+  }[];
+  hasSubmitted: boolean;
+};
+
 export type UploadStatus = "idle" | "success" | "error" | "loading";
 
 export const secondaryTextSx = [
