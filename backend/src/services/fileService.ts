@@ -76,6 +76,50 @@ export async function fetchInternalFile(fileId: number) {
   return files;
 }
 
+//for a single submission by ID, used in singular submission pages
+export async function fetchSingularSubmission(submissionId: number) {
+  const submission = await prisma.submission.findFirst({
+    where: { id: submissionId },
+    include: {
+      assignment: {
+        include: {
+          questions: true,
+        },
+      },
+      reviewers: true,
+      file: true,
+    },
+  });
+
+  if (!submission) return null;
+  return toFrontendSubmission(submission);
+}
+
+//for checking if a user has submitted to a specific assignment
+export async function fetchUserSubmissionForAssignment(
+  userId: string,
+  assignmentId: number,
+) {
+  const submission = await prisma.submission.findFirst({
+    where: {
+      creatorId: userId,
+      assignmentId: assignmentId,
+    },
+    include: {
+      assignment: {
+        include: {
+          questions: true,
+        },
+      },
+      reviewers: true,
+      file: true,
+    },
+  });
+
+  if (!submission) return null;
+  return toFrontendSubmission(submission);
+}
+
 //Updates status on sending of file
 export async function updateFileStatus(fileId: number, status: FileStatus) {
   const updatedFile = await prisma.file.update({
