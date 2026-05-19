@@ -3,7 +3,7 @@ import Alert from "@mui/material/Alert";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 
 import FilePreview from "./FilePreview";
-import { secondaryTextSx, type FileTypeFromDB } from "../../types/types";
+import { secondaryTextSx, type FileTypeFromDB } from "../types/types";
 
 function FilePreviewWrapper({
   file,

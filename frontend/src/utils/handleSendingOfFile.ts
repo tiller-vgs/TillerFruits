@@ -1,4 +1,4 @@
-import type { UploadFileType, UploadStatus } from "../../types/types";
+import type { UploadFileType, UploadStatus } from "../types/types";
 
 async function handleSendingOfFile({
   assignmentId,

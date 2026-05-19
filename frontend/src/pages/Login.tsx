@@ -3,7 +3,7 @@ import LoginCard from "../components/LoginCard";
 import FormHelperText from "@mui/material/FormHelperText";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import type { UploadStatus } from "../../types/types";
+import type { UploadStatus } from "../types/types";
 
 function Login() {
   const [errorMessage, setErrorMessage] = useState<string>("");

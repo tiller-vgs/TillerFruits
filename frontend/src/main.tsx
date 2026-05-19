@@ -17,6 +17,7 @@ import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";
 import AssignmentPage from "./pages/AssignmentPage.tsx";
 import MySubmissionPage from "./pages/MySubmissionPage.tsx";
 import OtherSubmissionPage from "./pages/OtherSubmissionPage.tsx";
+import TOS from "./pages/TOS.tsx";
 
 const theme = createTheme({
   colorSchemes: {
@@ -35,6 +36,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/tos" element={<TOS />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/upload" element={<HomePage />} />

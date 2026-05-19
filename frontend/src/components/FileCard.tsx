@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography, Chip, Box } from "@mui/material";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import type { FileItem } from "../../types/types";
+import type { FileItem } from "../types/types";
 
 function FileCard({ file }: { file: FileItem }) {
   const ext = file.extension.replace(".", "").toUpperCase();

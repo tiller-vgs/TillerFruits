@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import QuestionSchema from "../components/QuestionSchema";
-import { secondaryTextSx } from "../../types/types";
+import { secondaryTextSx } from "../types/types";
 
 function AssignmentDistribute() {
   return (

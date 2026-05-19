@@ -11,7 +11,7 @@ import Chip from "@mui/material/Chip";
 
 import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { secondaryTextSx } from "../../types/types";
+import { secondaryTextSx } from "../types/types";
 
 function StudentPage() {
   const { assignedSubmissions, mySubmissions, recipientAssignments } =
