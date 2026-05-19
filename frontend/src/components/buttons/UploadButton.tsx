@@ -20,9 +20,7 @@ function UploadButton({
   setErrorMessage,
   setUploadStatus,
 }: UploadButtonProps) {
-
   function handleFileInput(event: React.ChangeEvent<HTMLInputElement>) {
-
     //gets file, formats it, validates it, sets errormessages and doesnt setfile if there were any errors.
     const file = event.target.files?.[0] || null;
     if (!file) return;
