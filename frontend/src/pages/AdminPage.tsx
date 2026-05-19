@@ -1,6 +1,6 @@
 import FileList from "../components/FileList";
-import { Box, Typography, Divider, Container } from "@mui/material";
-import { Navigate } from "react-router-dom";
+import { Typography, Divider, Container, Button } from "@mui/material";
+import { Navigate, useNavigate } from "react-router-dom";
 import { authClient } from "../utils/auth-client";
 import type { Session } from "../utils/auth-client";
 
@@ -11,7 +11,7 @@ function AdminPage() {
     data: Session | null;
     isPending: boolean;
   };
-
+  const navigate = useNavigate();
   if (isPending) return null;
 
   if (!session?.user || !ADMIN_ROLES.includes(session.user.role as string)) {
@@ -26,6 +26,17 @@ function AdminPage() {
         Administrer innleverte filer og oppgaver
       </Typography>
       <Divider sx={{ mb: 4 }} />
+      <Button
+        variant="contained"
+        sx={{
+          mb: 4,
+          bgcolor: "secondary.dark",
+          "&:hover": { bgcolor: "secondary.main" },
+        }}
+        onClick={() => navigate("/admin/assignment/create-new")}
+      >
+        Create New Assignment
+      </Button>
       <FileList />
     </Container>
   );
