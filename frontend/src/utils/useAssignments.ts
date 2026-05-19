@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { FrontendSubmission } from "../../types/types";
+import type { FrontendSubmission, RecipientAssignment } from "../../types/types";
 
 export default function useAssignments() {
   const navigate = useNavigate();
@@ -9,6 +9,9 @@ export default function useAssignments() {
     FrontendSubmission[]
   >([]);
   const [mySubmissions, setMySubmissions] = useState<FrontendSubmission[]>([]);
+  const [recipientAssignments, setRecipientAssignments] = useState<
+    RecipientAssignment[]
+  >([]);
 
   useEffect(() => {
     async function fetchAssignment() {
@@ -20,6 +23,7 @@ export default function useAssignments() {
         const submissionData = await res.json();
         setAssignedSubmissions(submissionData.data.assignedSubmissions);
         setMySubmissions(submissionData.data.userSubmissions);
+        setRecipientAssignments(submissionData.data.recipientAssignments);
       } catch (error) {
         console.error(error);
       }
@@ -27,5 +31,5 @@ export default function useAssignments() {
     fetchAssignment();
   }, [navigate]);
 
-  return { assignedSubmissions, mySubmissions };
+  return { assignedSubmissions, mySubmissions, recipientAssignments };
 }

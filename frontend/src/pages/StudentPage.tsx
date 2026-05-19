@@ -2,16 +2,20 @@ import useAssignments from "../utils/useAssignments";
 
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 
 import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { secondaryTextSx } from "../../types/types";
 
 function StudentPage() {
-  const { assignedSubmissions, mySubmissions } = useAssignments();
+  const { assignedSubmissions, mySubmissions, recipientAssignments } =
+    useAssignments();
   const navigate = useNavigate();
 
   const openButtonSx = [
@@ -74,7 +78,25 @@ function StudentPage() {
       }),
   ];
 
-  console.log(mySubmissions);
+  const assignmentButtonSx = [
+    (theme: any) => ({
+      backgroundColor: alpha(theme.palette.primary.light, 0.2),
+      color: theme.palette.primary.dark,
+      fontWeight: 600,
+      fontSize: "0.9rem",
+      paddingY: "0.2rem",
+      paddingX: "1.5rem",
+      borderRadius: "0.75rem",
+      textTransform: "none",
+
+      "&:hover": {
+        boxShadow: theme.shadows[1],
+        backgroundColor: theme.palette.primary.main,
+        color: "#fff",
+      },
+    }),
+  ];
+
   return (
     <main className="flex min-h-[calc(100dvh-165px)] flex-col items-center justify-between xs:px-3 lg:px-15 py-8">
       <div className="flex w-full flex-col gap-8">
@@ -88,40 +110,38 @@ function StudentPage() {
             </Typography>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div className="p-2 px-5">
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                }}
-              >
+              <Typography sx={{ fontSize: "0.8rem", fontWeight: 700 }}>
+                OPPGAVER:
+              </Typography>
+              <h2 className="mt-2 text-4xl font-bold">
+                {recipientAssignments.length}
+              </h2>
+              <Typography sx={[...secondaryTextSx, { marginTop: "0.5rem" }]}>
+                Oppgaver fra lærer
+              </Typography>
+            </div>
+
+            <div className="p-2 px-5">
+              <Typography sx={{ fontSize: "0.8rem", fontWeight: 700 }}>
                 NYE OPPGAVER:
               </Typography>
-
               <h2 className="mt-2 text-4xl font-bold">
                 {assignedSubmissions.length}
               </h2>
-
               <Typography sx={[...secondaryTextSx, { marginTop: "0.5rem" }]}>
                 Filer som trenger tilbakemelding
               </Typography>
             </div>
 
             <div className="p-2 px-5">
-              <Typography
-                sx={{
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                }}
-              >
+              <Typography sx={{ fontSize: "0.8rem", fontWeight: 700 }}>
                 DINE OPPLASTINGER:
               </Typography>
-
               <h2 className="mt-2 text-4xl font-bold">
                 {mySubmissions.length}
               </h2>
-
               <Typography sx={[...secondaryTextSx, { marginTop: "0.5rem" }]}>
                 Filer du selv har sendt inn
               </Typography>
@@ -129,7 +149,69 @@ function StudentPage() {
           </div>
         </header>
 
+        {/* Assignments from teacher */}
+        <section className="px-6">
+          <div className="mb-5 border-b border-slate-300 pb-4">
+            <h2 className="text-2xl font-semibold">Mine Oppgaver</h2>
+            <Typography sx={[...secondaryTextSx, { marginTop: "0.15rem" }]}>
+              Oppgaver fra lærer — last opp fil eller se hva du har levert
+            </Typography>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {recipientAssignments.length === 0 ? (
+              <div className="px-5 py-8 text-center">
+                <Typography sx={secondaryTextSx}>
+                  Ingen oppgaver tilgjengelig ennå.
+                </Typography>
+              </div>
+            ) : (
+              recipientAssignments.map((assignment) => (
+                <div
+                  key={assignment.id}
+                  className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-300 px-4 py-4 transition hover:border-dusty-lavender hover:shadow-sm"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-xl bg-bright-lemon/70 p-2 text-coffee-bean">
+                      {assignment.hasSubmitted ? (
+                        <CheckCircleOutlineIcon />
+                      ) : (
+                        <AssignmentOutlinedIcon />
+                      )}
+                    </div>
+
+                    <div>
+                      <p className="font-bold">{assignment.title}</p>
+                      <Typography sx={secondaryTextSx}>
+                        {assignment.questions.length} spørsmål
+                      </Typography>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <Chip
+                      label={assignment.hasSubmitted ? "Levert" : "Ikke levert"}
+                      color={assignment.hasSubmitted ? "success" : "warning"}
+                      size="small"
+                      sx={{ fontWeight: 600 }}
+                    />
+                    <Button
+                      sx={assignmentButtonSx}
+                      onClick={() =>
+                        navigate(`/me/assignments/${assignment.id}`)
+                      }
+                    >
+                      Åpne
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </section>
+
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {/* Other students' files to review */}
           <section className="px-6">
             <div className="mb-5 border-b border-slate-300 pb-4">
               <div className="flex items-center gap-3">
@@ -193,6 +275,7 @@ function StudentPage() {
             </div>
           </section>
 
+          {/* User's own submissions */}
           <section className="px-6">
             <div className="mb-5 border-b border-slate-300 pb-4">
               <div className="flex items-center gap-3">

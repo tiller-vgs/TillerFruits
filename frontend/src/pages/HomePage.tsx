@@ -11,8 +11,11 @@ import FilePreview from "../components/FilePreview";
 import FilePreviewButton from "../components/FilePreviewButton";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import { useParams } from "react-router-dom";
 
 function HomePage() {
+  const { id } = useParams<{ id: string }>();
+  const assignmentId = id ? Number(id) : 1;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [addedFile, setAddedFile] = useState<UploadFileType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -72,7 +75,7 @@ function HomePage() {
 
               {addedFile && (
                 <SubmitFileButton
-                  assignmentId={1}
+                  assignmentId={assignmentId}
                   addedFile={addedFile}
                   setUploadStatus={setUploadStatus}
                   setErrorMessage={setErrorMessage}
