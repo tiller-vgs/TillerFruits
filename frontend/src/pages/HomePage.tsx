@@ -1,8 +1,12 @@
 import FormHelperText from "@mui/material/FormHelperText";
 import { useEffect, useRef, useState } from "react";
-import type { UploadFileType, UploadStatus } from "../../types/types";
-import UploadButton from "../components/UploadButton";
-import SubmitFileButton from "../components/SubmitFileButton";
+import {
+  secondaryTextSx,
+  type UploadFileType,
+  type UploadStatus,
+} from "../../types/types";
+import UploadButton from "../components/buttons/UploadButton";
+import SubmitFileButton from "../components/buttons/SubmitFileButton";
 import FilePreview from "../components/FilePreview";
 import FilePreviewButton from "../components/FilePreviewButton";
 import Alert from "@mui/material/Alert";
@@ -33,13 +37,7 @@ function HomePage() {
           <div className="flex flex-col mx-4.5">
             <h1 className="text-4xl font-bold">Last opp fil</h1>
 
-            <Typography
-              sx={{
-                color: "#62748e",
-                fontSize: "0.9rem",
-                marginTop: "0.3rem",
-              }}
-            >
+            <Typography sx={[...secondaryTextSx, { marginTop: "0.3rem" }]}>
               Last opp filer og forhåndsvis PDF-filer før innsending.
             </Typography>
           </div>
@@ -74,6 +72,7 @@ function HomePage() {
 
               {addedFile && (
                 <SubmitFileButton
+                  assignmentId={1}
                   addedFile={addedFile}
                   setUploadStatus={setUploadStatus}
                   setErrorMessage={setErrorMessage}

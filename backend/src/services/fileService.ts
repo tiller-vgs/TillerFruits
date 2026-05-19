@@ -1,7 +1,9 @@
-import { File, FileStatus } from "../generated/prisma/browser";
+import { Submission } from "./../generated/prisma/browser";
+import { FileStatus } from "../generated/prisma/browser";
 import { prisma } from "../lib/db";
 import { toFrontendFile } from "../mappers/file.mapper";
 import { fetchUserAssignments } from "./assignmentService";
+import { toFrontendSubmission } from "../mappers/submission.mapper";
 
 //all files. unsure why we're using it. if you know please comment.
 export async function fetchAllFiles() {
@@ -9,35 +11,28 @@ export async function fetchAllFiles() {
   return files.map(toFrontendFile);
 }
 
-//for user assignments
-export async function fetchUserFiles(userId: string) {
-  const userAssignments = await fetchUserAssignments(userId);
-
-  const fileIds = userAssignments.map((a) => a.fileId);
-  const [assignmentFiles, totalAssignmentFiles] = await Promise.all([
-    prisma.file.findMany({
-      take: 7,
-      where: {
-        id: {
-          in: fileIds,
+//For student MyPage.
+// Fetches all the submissions user has been assigned to review together with important data
+export async function fetchAssignedSubmissions(userId: string) {
+  const assignedFiles = await prisma.submission.findMany({
+    where: {
+      reviewers: {
+        some: {
+          reviewerId: userId,
         },
       },
-    }),
+    },
+    include: {
+      file: true,
+      assignment: true,
+      creator: true,
+    },
+  });
 
-    prisma.assignment.count({
-      where: {
-        userId: userId,
-      },
-    }),
-  ]);
-
-  return {
-    assignmentFiles: assignmentFiles.map(toFrontendFile),
-    totalAssignmentFiles,
-  };
+  return assignedFiles;
 }
 
-//for singular file data in frontend
+//for singular file data in frontend. Used for /:id pages.
 export async function fetchSingularFileFrontend(fileId: number) {
   const file = await prisma.file.findFirst({
     where: {
@@ -50,26 +45,26 @@ export async function fetchSingularFileFrontend(fileId: number) {
 }
 
 //for all file data in frontend based on creatorID. used in mypage/creatorAssignments
-export async function fetchAllFilesByIdFrontend(creatorid: string) {
-  const [files, totalFiles] = await Promise.all([
-    prisma.file.findMany({
-      take: 7,
-      where: {
-        creatorId: creatorid,
-      },
-    }),
+export async function fetchAllSubmissionsByCreatorId(creatorId: string) {
+  const allUserSubmissions = await prisma.submission.findMany({
+    where: {
+      creatorId,
+    },
 
-    prisma.file.count({
-      where: {
-        creatorId: creatorid,
+    include: {
+      assignment: {
+        include: {
+          questions: true,
+        },
       },
-    }),
-  ]);
 
-  return {
-    files: files.map(toFrontendFile),
-    totalFiles,
-  };
+      reviewers: true,
+
+      file: true,
+    },
+  });
+
+  return allUserSubmissions.map(toFrontendSubmission);
 }
 
 //for backend that needs extra file information
@@ -81,6 +76,7 @@ export async function fetchInternalFile(fileId: number) {
   return files;
 }
 
+//Updates status on sending of file
 export async function updateFileStatus(fileId: number, status: FileStatus) {
   const updatedFile = await prisma.file.update({
     where: {

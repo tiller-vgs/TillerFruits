@@ -1,9 +1,9 @@
 import { prisma } from "../lib/db";
 import { User } from "../generated/prisma/browser";
 import { fetchInternalFile } from "../services/fileService";
-import generateRandomDisplayName from "./generateRandomDisplayName";
 
-export default async function assignStudentsToReviewFile(fileId: number) {
+//Generates a couple of random students. Generating is based upon the size of the database.
+export async function assignStudentsToReviewFile(fileId: number) {
   const fileToAssign = await fetchInternalFile(fileId);
   const studentList: User[] = await prisma.user.findMany({
     where: {
@@ -27,18 +27,43 @@ export default async function assignStudentsToReviewFile(fileId: number) {
 
   const studentAmount = randomStudents.length;
 
-  const assignments = await prisma.assignment.createMany({
-    data: await Promise.all(
-      randomStudents.map(async (student) => ({
-        fileId,
-        creatorId: fileToAssign.creatorId,
-        userId: student.id,
-        anonDisplayName: await generateRandomDisplayName(),
-      })),
-    ),
+  return { randomStudents, studentAmount };
+}
+
+// Assigns all students, no generations.
+//Since util is short and only used by admins, it also makes a creation query of the assignment and all the users/students
+export async function assignAllStudents(
+  assignmentTitle: string,
+  questions: { title: string }[],
+) {
+  const studentList: User[] = await prisma.user.findMany({
+    where: {
+      role: "student",
+    },
   });
 
-  console.log(assignments);
+  const studentAmount = studentList.length;
+  const assignment = await prisma.assignment.create({
+    data: {
+      title: assignmentTitle,
 
-  return { fileId, studentAmount };
+      questions: {
+        create: questions.map((q) => ({
+          title: q.title,
+        })),
+      },
+
+      recipents: {
+        create: studentList.map((s, i) => ({
+          user: {
+            connect: { id: s.id },
+          },
+        })),
+      },
+    },
+  });
+
+  console.log(assignment);
+
+  return { studentAmount };
 }

@@ -7,13 +7,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/landingPage.tsx";
 import Login from "./pages/Login.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
-import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import StudentPage from "./pages/StudentPage.tsx";
 import Footer from "./components/Footer.tsx";
+import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";
 import TOS from "./pages/TOS.tsx";
 
 const theme = createTheme({
@@ -37,9 +37,10 @@ createRoot(document.getElementById("root")!).render(
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/upload" element={<HomePage />} />
-            <Route path="/me/assignments" element={<StudentPage />} />
+            <Route path="/me/schoolwork" element={<StudentPage />} />
+            <Route path="/me/assignments/:id/upload" element={<HomePage />} />
             <Route path="/admin" element={<AdminPage />} />
-            <Route path="/admin/file/:id" element={<AssignmentDistribute />} />
+            <Route path="/admin/assignment/create-new" element={<AssignmentDistribute />} />
           </Route>
         </Routes>
 
