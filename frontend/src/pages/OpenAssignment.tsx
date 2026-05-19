@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import type { FileTypeFromDB } from "../../types/types";
+import type { FileTypeFromDB } from "../types/types";
 
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";

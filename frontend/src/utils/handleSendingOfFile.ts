@@ -1,4 +1,4 @@
-import type { UploadFileType, UploadStatus } from "../../types/types";
+import type { UploadFileType, UploadStatus } from "../types/types";
 
 async function handleSendingOfFile({
   assignmentId,
@@ -6,7 +6,7 @@ async function handleSendingOfFile({
   setUploadStatus,
   setErrorMessage,
 }: {
-  assignmentId: number
+  assignmentId: number;
   addedFile: UploadFileType;
   setUploadStatus: React.Dispatch<React.SetStateAction<UploadStatus>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<string>>;

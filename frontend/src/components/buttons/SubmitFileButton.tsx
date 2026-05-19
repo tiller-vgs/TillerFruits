@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import type { UploadFileType, UploadStatus } from "../../../types/types";
+import type { UploadFileType, UploadStatus } from "../../types/types";
 import handleSendingOfFile from "../../utils/handleSendingOfFile";
 
 function SubmitFileButton({

@@ -10,7 +10,7 @@ import { useState } from "react";
 import { handleSendNewAssignment } from "../utils/handleDistribution";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddQuestionButton from "./buttons/AddQuestionButton";
-import { secondaryTextSx } from "../../types/types";
+import { secondaryTextSx } from "../types/types";
 
 export type AssignmentFormData = {
   assignmentTitle: string;
