@@ -48,10 +48,33 @@ Then, repeat the same process for backend:
     $ npm install
 ```
 
+Setup DB
+To setup the database, create a new .env file with these values:
+```
+DATABASE_URL=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+```
+Ask one of the devs for the env values.
+After that, you need to generate the database using the pre-made schema.sql
+Simply follow these steps:
+
+```
+open the backend once more:
+     $ cd TillerFruits/backend
+
+run this command to generate from schema:
+    $ npx prisma generate
+```
+If you did everything correctly, backend should respond with:     
+`✔ Generated Prisma Client`     
+
+and the database connection should work!
+
 #### Opening the website
 
-Keeping the terminal open, run `npm run dev` in the same directory you ran `npm i`  
-A link including a blue-highlighted localhost should pop up in your terminal.  
+Keeping the frontend AND backend terminals open, run `npm run dev` in both of them  
+A link including a blue-highlighted localhost should pop up in your frontend terminal.  
 Control + Click on `http://localhost:5137/` in order to open the website in your browser
 
 ### Credits
