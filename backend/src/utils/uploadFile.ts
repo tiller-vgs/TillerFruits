@@ -10,6 +10,7 @@ export default async function uploadFile(
   buffer: Buffer,
   originalFilename: string,
   userId: string,
+  assignmentId: number,
 ) {
   const maxFileSize = 10 * 1024 * 1024;
   const minFileSize = 1 * 1024;
@@ -70,16 +71,21 @@ export default async function uploadFile(
   const secureFilename = `${randomFilename}.${mimeFileExtension?.ext}`;
   const fileHash = createHash("sha256").update(buffer).digest("hex");
 
-  await prisma.file.create({
+  const uploadedFile = await prisma.file.create({
     data: {
-      creatorId: userId,
-      displayName: displayName,
+      creator: {
+        connect: { id: userId },
+      },
+
+      displayName,
       originalName: originalFilename,
       savedName: secureFilename,
-      mimeType: mimeFileExtension?.mime || "",
-      extension: mimeFileExtension?.ext || "",
+
+      mimeType: mimeFileExtension.mime,
+      extension: mimeFileExtension.ext,
       fileSize: buffer.length,
       filehash: fileHash,
+      assignment: { connect: { id: assignmentId } },
     },
   });
 
@@ -91,6 +97,7 @@ export default async function uploadFile(
 
     const savedFilePath = join(savingDir, secureFilename);
     await writeFile(savedFilePath, buffer);
+    return uploadedFile;
   } catch (error) {
     console.error("Error saving file:", error);
     throw new Error("Det oppsto en feil under lagring av filen.");

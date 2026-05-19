@@ -24,6 +24,9 @@ export default async function generateRandomDisplayName() {
     displayName = `${randomAdjective}-${randomVerb}-${randomFruitOrAnimal}`;
 
     existingDisplayName = await prisma.file.findFirst({
+      include: {
+        assignment: true,
+      },
       where: {
         displayName: displayName,
       },

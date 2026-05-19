@@ -1,9 +1,13 @@
 import Button from "@mui/material/Button";
 
-function SendAssignmentButton() {
+export default function SendAssignmentButton({
+  type = "submit",
+}: {
+  type?: "button" | "submit";
+}) {
   return (
     <Button
-      onClick={() => console.log("trying")}
+      type={type}
       sx={[
         (theme) => ({
           color: "#fff",
@@ -38,5 +42,3 @@ function SendAssignmentButton() {
     </Button>
   );
 }
-
-export default SendAssignmentButton;

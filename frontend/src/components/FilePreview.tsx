@@ -5,6 +5,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 
+//takes in EITHER file (fileuploading page) or fileURL (the rest of the pages)
 type FilePreviewProps =
   | {
       file: File;

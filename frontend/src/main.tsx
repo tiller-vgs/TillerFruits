@@ -35,7 +35,8 @@ createRoot(document.getElementById("root")!).render(
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/upload" element={<HomePage />} />
-            <Route path="/me/assignments" element={<StudentPage />} />
+            <Route path="/me/schoolwork" element={<StudentPage />} />
+            <Route path="/me/assignments/:id/upload" element={<HomePage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/assignment/create-new" element={<AssignmentDistribute />} />
           </Route>

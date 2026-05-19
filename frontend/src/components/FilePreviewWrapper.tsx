@@ -3,7 +3,7 @@ import Alert from "@mui/material/Alert";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 
 import FilePreview from "./FilePreview";
-import type { FileTypeFromDB } from "../../types/types";
+import { secondaryTextSx, type FileTypeFromDB } from "../../types/types";
 
 function FilePreviewWrapper({
   file,
@@ -12,17 +12,6 @@ function FilePreviewWrapper({
   file: FileTypeFromDB | null;
   fileURL: string;
 }) {
-  const secondaryTextSx = [
-    {
-      color: "#62748e",
-      fontSize: "0.9rem",
-    },
-    (theme: any) =>
-      theme.applyStyles("dark", {
-        color: "#90a1b9",
-      }),
-  ];
-
   const isPdf = file?.extension === "pdf";
 
   return (

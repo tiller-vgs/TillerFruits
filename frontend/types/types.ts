@@ -21,7 +21,46 @@ export type FileItem = {
   extension: string;
   originalName: string;
   displayName: string;
-  status: "new" | "sent";
-}
+};
+
+export type FrontendSubmission = {
+  id: number;
+
+  createdAt: Date;
+
+  assignment: {
+    id: number;
+    title: string;
+
+    questions: {
+      id: number;
+      title: string;
+    }[];
+  };
+
+  reviewers: {
+    anonName: string;
+    completed: boolean;
+  }[];
+
+  file: {
+    id: number;
+    originalName: string;
+    displayName: string;
+    extension: string;
+    createdAt: Date;
+  };
+};
 
 export type UploadStatus = "idle" | "success" | "error" | "loading";
+
+export const secondaryTextSx = [
+  {
+    color: "#62748e",
+    fontSize: "0.9rem",
+  },
+  (theme: any) =>
+    theme.applyStyles("dark", {
+      color: "#90a1b9",
+    }),
+];
