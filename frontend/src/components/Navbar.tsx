@@ -43,7 +43,7 @@ export default function Navbar() {
           justifyContent: "space-between",
           px: 2,
           py: 1.5,
-          bgcolor: "#679436",
+          bgcolor: "var(--color-sage-green-nav)",
           color: "white",
         }}
       >
@@ -69,7 +69,7 @@ export default function Navbar() {
             sx={{ borderRadius: 2, mx: 1, mb: 0.5 }}
           >
             <AccountCircleIcon
-              sx={{ mr: 1.5, fontSize: 20, color: "#679436" }}
+              sx={{ mr: 1.5, fontSize: 20, color: "var(--color-sage-green-nav)" }}
             />
             <ListItemText primary="Min Side" />
           </ListItemButton>
@@ -130,7 +130,7 @@ export default function Navbar() {
   );
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ bgcolor: "#679436" }}>
+      <AppBar position="static" sx={{ bgcolor: "var(--color-sage-green-nav)" }}>
         <Toolbar className="flex w-full">
           <NavLink
             to="/"
