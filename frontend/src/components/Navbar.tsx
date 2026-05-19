@@ -64,18 +64,7 @@ export default function Navbar() {
         <ListItem disablePadding>
           <ListItemButton
             component={NavLink}
-            to="/upload"
-            onClick={() => setDrawerOpen(false)}
-            sx={{ borderRadius: 2, mx: 1, mb: 0.5 }}
-          >
-            <ListItemText primary="Upload" />
-          </ListItemButton>
-        </ListItem>
-
-        <ListItem disablePadding>
-          <ListItemButton
-            component={NavLink}
-            to="/me/assignments"
+            to="/me/schoolwork"
             onClick={() => setDrawerOpen(false)}
             sx={{ borderRadius: 2, mx: 1, mb: 0.5 }}
           >
@@ -159,12 +148,6 @@ export default function Navbar() {
               alignItems: "center",
             }}
           >
-            <NavLink
-              to="/upload"
-              style={{ color: "inherit", textDecoration: "none" }}
-            >
-              <Button color="inherit">Upload</Button>
-            </NavLink>
             {!session?.user ? (
               <>
                 <NavLink
@@ -200,7 +183,7 @@ export default function Navbar() {
               </>
             )}
             <NavLink
-              to="/me/assignments"
+              to="/me/schoolwork"
               style={{ color: "inherit", textDecoration: "none" }}
             >
               <Button color="inherit">

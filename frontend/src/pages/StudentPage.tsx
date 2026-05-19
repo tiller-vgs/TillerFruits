@@ -164,7 +164,13 @@ function StudentPage() {
                       </div>
 
                       <div>
-                        <p className="font-medium"></p>
+                        <p className="font-bold">
+                          {submission.assignment.title}
+                        </p>
+                        <p className="font-medium text-sm">
+                          {submission.file.originalName}
+                        </p>
+
                         <Typography sx={secondaryTextSx}>
                           Klar for tilbakemelding
                         </Typography>
@@ -174,7 +180,9 @@ function StudentPage() {
                     <Button
                       sx={openButtonSx}
                       onClick={() => {
-                        navigate(`/me/assignments/${submission.id}`);
+                        navigate(
+                          `/me/submissions/other-submissions/${submission.id}`,
+                        );
                       }}
                     >
                       Åpne
@@ -220,8 +228,11 @@ function StudentPage() {
                       </div>
 
                       <div>
-                        <p className="font-medium">
+                        <p className="font-bold">
                           {submission.assignment.title}
+                        </p>
+                        <p className="font-medium text-sm">
+                          {submission.file.originalName}
                         </p>
 
                         <Typography sx={secondaryTextSx}>
@@ -233,7 +244,9 @@ function StudentPage() {
                     <Button
                       sx={submittedButtonSx}
                       onClick={() => {
-                        navigate(`/me/assignments/${submission.id}`);
+                        navigate(
+                          `/me/submissions/my-submissions/${submission.id}`,
+                        );
                       }}
                     >
                       Se fremgang

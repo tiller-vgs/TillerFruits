@@ -184,7 +184,7 @@ app.get("/api/v1/files/:id/content", async (req, res) => {
 });
 
 //for students to see all their assigned submissions and their own submissions
-app.get("/api/v1/me/assignments", requireLogin, async (req, res) => {
+app.get("/api/v1/me/schoolwork", requireLogin, async (req, res) => {
   try {
     const userId = req.session.user.id;
     const assignedSubmissions = await fetchAssignedSubmissions(userId);
@@ -192,7 +192,7 @@ app.get("/api/v1/me/assignments", requireLogin, async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Assignments and submissions fetched successfully",
+      message: "Submissions fetched successfully",
       data: { assignedSubmissions, userSubmissions },
     });
   } catch (error: any) {
