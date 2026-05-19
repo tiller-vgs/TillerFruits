@@ -1,5 +1,7 @@
-import type { UploadFileType } from "../types/types";
+import type { UploadFileType } from "../../types/types";
 
+//Validates file in frontend for quicker/easier user feedback, blocks some requests from backend.
+//of course this isnt safe, its here just to guide users a little better with strict rules from the very start.
 function validateFile(file: UploadFileType, acceptedFileFormats: string[]) {
   const fileFormatValid = acceptedFileFormats.some((extension) =>
     file.name.includes(extension),

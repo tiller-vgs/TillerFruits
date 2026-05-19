@@ -11,12 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { secondaryTextSx } from "../../types/types";
 
 function StudentPage() {
-  const {
-    newAssignments,
-    newAssignmentsTotal,
-    myAssignments,
-    myAssignmentsTotal,
-  } = useAssignments();
+  const { assignedSubmissions, mySubmissions } = useAssignments();
   const navigate = useNavigate();
 
   const openButtonSx = [
@@ -79,6 +74,7 @@ function StudentPage() {
       }),
   ];
 
+  console.log(mySubmissions);
   return (
     <main className="flex min-h-[calc(100dvh-165px)] flex-col items-center justify-between xs:px-3 lg:px-15 py-8">
       <div className="flex w-full flex-col gap-8">
@@ -87,8 +83,8 @@ function StudentPage() {
             <h1 className="text-4xl font-bold">Studentside</h1>
 
             <Typography sx={[...secondaryTextSx, { marginTop: "0.3rem" }]}>
-              Her kan du se filer du har fått tildelt og filer du selv har
-              lastet opp.
+              Her kan du se oppgaver, filer du har fått tildelt, og filer du
+              selv har lastet opp.
             </Typography>
           </div>
 
@@ -103,7 +99,9 @@ function StudentPage() {
                 NYE OPPGAVER:
               </Typography>
 
-              <h2 className="mt-2 text-4xl font-bold">{newAssignmentsTotal}</h2>
+              <h2 className="mt-2 text-4xl font-bold">
+                {assignedSubmissions.length}
+              </h2>
 
               <Typography sx={[...secondaryTextSx, { marginTop: "0.5rem" }]}>
                 Filer som trenger tilbakemelding
@@ -120,7 +118,9 @@ function StudentPage() {
                 DINE OPPLASTINGER:
               </Typography>
 
-              <h2 className="mt-2 text-4xl font-bold">{myAssignmentsTotal}</h2>
+              <h2 className="mt-2 text-4xl font-bold">
+                {mySubmissions.length}
+              </h2>
 
               <Typography sx={[...secondaryTextSx, { marginTop: "0.5rem" }]}>
                 Filer du selv har sendt inn
@@ -134,28 +134,28 @@ function StudentPage() {
             <div className="mb-5 border-b border-slate-300 pb-4">
               <div className="flex items-center gap-3">
                 <div>
-                  <h2 className="text-2xl font-semibold">Nye filer</h2>
+                  <h2 className="text-2xl font-semibold">Nye Oppgaver</h2>
 
                   <Typography
                     sx={[...secondaryTextSx, { marginTop: "0.15rem" }]}
                   >
-                    Filer du må gi tilbakemelding på
+                    Filer medelevene dine sendte, som du må gi tilbakemelding på
                   </Typography>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-3">
-              {newAssignments.length === 0 ? (
+              {assignedSubmissions.length === 0 ? (
                 <div className="px-5 py-8 text-center">
                   <Typography sx={secondaryTextSx}>
                     Ingen nye filer tilgjengelig.
                   </Typography>
                 </div>
               ) : (
-                newAssignments.map((assignment) => (
+                assignedSubmissions.map((submission) => (
                   <div
-                    key={assignment.id}
+                    key={submission.id}
                     className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-300 px-4 py-4 transition hover:border-dusty-lavender hover:shadow-sm"
                   >
                     <div className="flex items-center gap-3">
@@ -164,7 +164,13 @@ function StudentPage() {
                       </div>
 
                       <div>
-                        <p className="font-medium">{assignment.originalName}</p>
+                        <p className="font-bold">
+                          {submission.assignment.title}
+                        </p>
+                        <p className="font-medium text-sm">
+                          {submission.file.originalName}
+                        </p>
+
                         <Typography sx={secondaryTextSx}>
                           Klar for tilbakemelding
                         </Typography>
@@ -174,7 +180,9 @@ function StudentPage() {
                     <Button
                       sx={openButtonSx}
                       onClick={() => {
-                        navigate(`/me/assignments/${assignment.id}`);
+                        navigate(
+                          `/me/submissions/other-submissions/${submission.id}`,
+                        );
                       }}
                     >
                       Åpne
@@ -189,28 +197,29 @@ function StudentPage() {
             <div className="mb-5 border-b border-slate-300 pb-4">
               <div className="flex items-center gap-3">
                 <div>
-                  <h2 className="text-2xl font-semibold">Dine filer</h2>
+                  <h2 className="text-2xl font-semibold">Besvarte Oppgaver</h2>
 
                   <Typography
                     sx={[...secondaryTextSx, { marginTop: "0.15rem" }]}
                   >
-                    Filer du selv har lastet opp
+                    Filer du selv har lastet opp, som venter på tilbakemelding
+                    fra dine medelever
                   </Typography>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col gap-3">
-              {myAssignments.length === 0 ? (
+              {mySubmissions.length === 0 ? (
                 <div className="px-5 py-8 text-center">
                   <Typography sx={secondaryTextSx}>
                     Du har ikke lastet opp noen filer enda.
                   </Typography>
                 </div>
               ) : (
-                myAssignments.map((assignment) => (
+                mySubmissions.map((submission) => (
                   <div
-                    key={assignment.id}
+                    key={submission.id}
                     className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between rounded-2xl border border-slate-300 px-4 py-4 transition hover:border-dusty-lavender hover:shadow-sm"
                   >
                     <div className="flex items-center gap-3">
@@ -219,7 +228,12 @@ function StudentPage() {
                       </div>
 
                       <div>
-                        <p className="font-medium">{assignment.originalName}</p>
+                        <p className="font-bold">
+                          {submission.assignment.title}
+                        </p>
+                        <p className="font-medium text-sm">
+                          {submission.file.originalName}
+                        </p>
 
                         <Typography sx={secondaryTextSx}>
                           Lastet opp av deg
@@ -230,10 +244,12 @@ function StudentPage() {
                     <Button
                       sx={submittedButtonSx}
                       onClick={() => {
-                        navigate(`/me/assignments/${assignment.id}`);
+                        navigate(
+                          `/me/submissions/my-submissions/${submission.id}`,
+                        );
                       }}
                     >
-                      Sendt inn
+                      Se fremgang
                     </Button>
                   </div>
                 ))
