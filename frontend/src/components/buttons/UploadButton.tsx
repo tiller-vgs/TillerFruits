@@ -1,9 +1,15 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+<<<<<<< HEAD
+import formatFileInput from "../../utils/formatFileInput";
+import validateFile from "../../utils/validateFile";
+import type { UploadFileType, UploadStatus } from "../../types/types";
+=======
 import type { UploadFileType, UploadStatus } from "../../../types/types";
 import formatFileInput from "../../utils/formatFileInput";
 import validateFile from "../../utils/validateFile";
+>>>>>>> c93454fb41cf0fe4a260a51e1c7324e829c8957f
 
 interface UploadButtonProps {
   fileInputRef: React.RefObject<HTMLInputElement | null>;

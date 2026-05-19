@@ -8,8 +8,7 @@ import {
   Alert,
   Divider,
 } from "@mui/material";
-import type { FileItem } from "../../types/types";
-
+import type { FileItem } from "../types/types";
 
 function FileList() {
   const [files, setFiles] = useState<FileItem[]>([]);

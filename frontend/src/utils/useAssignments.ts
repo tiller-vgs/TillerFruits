@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
+import type { FileTypeFromDB } from "../types/types";
+=======
 import type { FrontendSubmission } from "../../types/types";
+>>>>>>> c93454fb41cf0fe4a260a51e1c7324e829c8957f
 
 export default function useAssignments() {
   const navigate = useNavigate();

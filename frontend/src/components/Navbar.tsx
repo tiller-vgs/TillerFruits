@@ -19,9 +19,15 @@ import Divider from "@mui/material/Divider";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import type { Session } from "../utils/auth-client";
+
+const ADMIN_ROLES = ["teacher", "admin"];
 
 export default function Navbar() {
-  const { data: session } = authClient.useSession();
+  const { data: session } = authClient.useSession() as { data: Session | null };
+  const isAdminOrTeacher = ADMIN_ROLES.includes(session?.user?.role as string);
+  console.log("session:", session);
+  console.log("session:", session);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const handleSignOut = async () => {
     await authClient.signOut();
@@ -102,16 +108,18 @@ export default function Navbar() {
           </>
         ) : (
           <>
-            <ListItem disablePadding>
-              <ListItemButton
-                component={NavLink}
-                to="/admin"
-                onClick={() => setDrawerOpen(false)}
-                sx={{ borderRadius: 2, mx: 1, mb: 0.5 }}
-              >
-                <ListItemText primary="Admin" />
-              </ListItemButton>
-            </ListItem>
+            {isAdminOrTeacher && (
+              <ListItem disablePadding>
+                <ListItemButton
+                  component={NavLink}
+                  to="/admin"
+                  onClick={() => setDrawerOpen(false)}
+                  sx={{ borderRadius: 2, mx: 1, mb: 0.5 }}
+                >
+                  <ListItemText primary="Admin" />
+                </ListItemButton>
+              </ListItem>
+            )}
             <ListItem disablePadding>
               <ListItemButton
                 onClick={() => {
@@ -171,12 +179,14 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <NavLink
-                  to="/admin"
-                  style={{ color: "inherit", textDecoration: "none" }}
-                >
-                  <Button color="inherit">Admin</Button>
-                </NavLink>
+                {isAdminOrTeacher && (
+                  <NavLink
+                    to="/admin"
+                    style={{ color: "inherit", textDecoration: "none" }}
+                  >
+                    <Button color="inherit">Admin</Button>
+                  </NavLink>
+                )}
                 <Button color="inherit" onClick={handleSignOut}>
                   Sign Out
                 </Button>

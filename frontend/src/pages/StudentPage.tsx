@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 
 import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { secondaryTextSx } from "../../types/types";
+import { secondaryTextSx } from "../types/types";
 
 function StudentPage() {
   const { assignedSubmissions, mySubmissions } = useAssignments();

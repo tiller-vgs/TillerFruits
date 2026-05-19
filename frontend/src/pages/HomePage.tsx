@@ -4,7 +4,7 @@ import {
   secondaryTextSx,
   type UploadFileType,
   type UploadStatus,
-} from "../../types/types";
+} from "../types/types";
 import UploadButton from "../components/buttons/UploadButton";
 import SubmitFileButton from "../components/buttons/SubmitFileButton";
 import FilePreview from "../components/FilePreview";
