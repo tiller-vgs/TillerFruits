@@ -14,6 +14,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import StudentPage from "./pages/StudentPage.tsx";
 import Footer from "./components/Footer.tsx";
 import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";
+import TOS from "./pages/TOS.tsx";
 
 const theme = createTheme({
   colorSchemes: {
@@ -32,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/tos" element={<TOS />} />
 
           <Route element={<ProtectedRoutes />}>
             <Route path="/upload" element={<HomePage />} />
