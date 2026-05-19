@@ -22,35 +22,6 @@ export type FileItem = {
   displayName: string;
 };
 
-export type FrontendSubmission = {
-  id: number;
-
-  createdAt: Date;
-
-  assignment: {
-    id: number;
-    title: string;
-
-    questions: {
-      id: number;
-      title: string;
-    }[];
-  };
-
-  reviewers: {
-    anonName: string;
-    completed: boolean;
-  }[];
-
-  file: {
-    id: number;
-    originalName: string;
-    displayName: string;
-    extension: string;
-    createdAt: Date;
-  };
-};
-
 export type UploadStatus = "idle" | "success" | "error" | "loading";
 
 export const secondaryTextSx = [

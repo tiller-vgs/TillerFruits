@@ -1,5 +1,7 @@
-import type { UploadFileType } from "../types/types";
+import type { UploadFileType } from "../../types/types";
 
+//Formats file into the type UploadFileType, which has additional info of the actual RAM-saved file. 
+//File is temporarily saved and can only be used during uploading 
 export default function formatFileInput(file: File): UploadFileType {
   return {
     file,

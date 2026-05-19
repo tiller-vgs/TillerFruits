@@ -18,6 +18,7 @@ async function handleSendingOfFile({
     return;
   }
 
+  //sends file into backend API route and sets uploading based on success
   const formData = new FormData();
   formData.append("file", addedFile.file);
 
@@ -43,6 +44,7 @@ async function handleSendingOfFile({
     setErrorMessage("");
     setUploadStatus("success");
   } catch (error: any) {
+    //for styling reasons, preferably changing english technical messages into something more user-friendly in norwegians
     setErrorMessage(
       error.message === "Failed to fetch"
         ? "En feil oppsto under opplastingen.\nVennligst oppdater siden eller ta kontakt med support hvis problemet fortsetter."

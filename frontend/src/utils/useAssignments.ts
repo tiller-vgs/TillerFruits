@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import type { FileTypeFromDB } from "../types/types";
+=======
+import type { FrontendSubmission } from "../../types/types";
+>>>>>>> c93454fb41cf0fe4a260a51e1c7324e829c8957f
 
 export default function useAssignments() {
   const navigate = useNavigate();
 
-  const [newAssignments, setNewAssignments] = useState<FileTypeFromDB[]>([]);
-  const [newAssignmentsTotal, setNewAssignmentsTotal] = useState<number>(0);
-  const [myAssignments, setMyAssignments] = useState<FileTypeFromDB[]>([]);
-  const [myAssignmentsTotal, setMyAssignmentsTotal] = useState<number>(0);
+  const [assignedSubmissions, setAssignedSubmissions] = useState<
+    FrontendSubmission[]
+  >([]);
+  const [mySubmissions, setMySubmissions] = useState<FrontendSubmission[]>([]);
 
   useEffect(() => {
     async function fetchAssignment() {
       try {
-        const res = await fetch("http://localhost:5000/api/v1/me/assignments", {
+        const res = await fetch("http://localhost:5000/api/v1/me/schoolwork", {
           credentials: "include",
         });
 
-        const assignmentData = await res.json();
-        setNewAssignments(assignmentData.data.assignmentFiles);
-        setNewAssignmentsTotal(assignmentData.data.totalAssignmentFiles);
-        setMyAssignments(assignmentData.data.files);
-        setMyAssignmentsTotal(assignmentData.data.totalFiles);
-        console.log(newAssignmentsTotal);
+        const submissionData = await res.json();
+        setAssignedSubmissions(submissionData.data.assignedSubmissions);
+        setMySubmissions(submissionData.data.userSubmissions);
       } catch (error) {
         console.error(error);
       }
@@ -30,10 +31,5 @@ export default function useAssignments() {
     fetchAssignment();
   }, [navigate]);
 
-  return {
-    newAssignments,
-    newAssignmentsTotal,
-    myAssignments,
-    myAssignmentsTotal,
-  };
+  return { assignedSubmissions, mySubmissions };
 }
