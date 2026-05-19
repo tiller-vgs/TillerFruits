@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 
 import { Pool } from "pg";
 import cors from "cors";
@@ -40,7 +40,11 @@ const pool = new Pool({
   database: "mydb",
 });
 
-async function requireLogin(req, res, next) {
+async function requireLogin(
+  req: Request & { session?: any },
+  res: Response,
+  next: NextFunction,
+) {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
   });
@@ -49,11 +53,10 @@ async function requireLogin(req, res, next) {
     return res.status(401).json({ message: "Logg inn, hmph." });
   }
 
-  req.session = session;
+  (req as any).session = session;
 
   next();
 }
-
 app.all("/api/auth/{*any}", toNodeHandler(auth));
 
 app.get("/", (req, res) => {
