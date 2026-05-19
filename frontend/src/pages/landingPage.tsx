@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -249,8 +250,24 @@ export default function LandingPage() {
         </div>
       </div>
 
-      <div ref={stepsReveal.ref} className="px-6 py-24 bg-coffee-bean">
-        <div className="max-w-5xl mx-auto">
+      <Card ref={stepsReveal.ref}
+      sx={[
+            {
+              backgroundColor: "var(--color-coffee-bean)",
+              color: "var(--color-bright-snow)",
+              paddingX: 6,
+              paddingY: 10,
+              fontWeight: 700,
+              borderRadius: 3,
+              
+            },
+            (theme) =>
+              theme.applyStyles("dark", {
+                  backgroundColor: "var(--color-sage-green)",
+                  color: "(--color-coffee-bean)",
+              }),
+          ]}>
+        <div className="max-w-full mx-auto">
           <h2
             className="text-3xl font-bold text-center mb-16 transition-all duration-700"
             style={{
@@ -261,11 +278,13 @@ export default function LandingPage() {
           >
             Slik fungerer det
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 place-items-center">
             {steps.map((step, i) => (
               <div
                 key={step.number}
                 style={{
+                  width: "70%",
+                  textAlign: "center",
                   opacity: stepsReveal.visible ? 1 : 0,
                   transform: stepsReveal.visible
                     ? "translateY(0)"
@@ -295,7 +314,7 @@ export default function LandingPage() {
             ))}
           </div>
         </div>
-      </div>
+      </Card>
 
       <div ref={splitReveal.ref} className="px-6 py-20">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
