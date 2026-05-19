@@ -78,24 +78,6 @@ function StudentPage() {
       }),
   ];
 
-  const assignmentButtonSx = [
-    (theme: any) => ({
-      backgroundColor: alpha(theme.palette.primary.light, 0.2),
-      color: theme.palette.primary.dark,
-      fontWeight: 600,
-      fontSize: "0.9rem",
-      paddingY: "0.2rem",
-      paddingX: "1.5rem",
-      borderRadius: "0.75rem",
-      textTransform: "none",
-
-      "&:hover": {
-        boxShadow: theme.shadows[1],
-        backgroundColor: theme.palette.primary.main,
-        color: "#fff",
-      },
-    }),
-  ];
 
   return (
     <main className="flex min-h-[calc(100dvh-165px)] flex-col items-center justify-between xs:px-3 lg:px-15 py-8">
@@ -182,7 +164,7 @@ function StudentPage() {
 
                     <div>
                       <p className="font-bold">{assignment.title}</p>
-                      <Typography sx={secondaryTextSx}>
+                      <Typography sx={[...secondaryTextSx]}>
                         {assignment.questions.length} spørsmål
                       </Typography>
                     </div>
@@ -196,7 +178,7 @@ function StudentPage() {
                       sx={{ fontWeight: 600 }}
                     />
                     <Button
-                      sx={assignmentButtonSx}
+                      sx={[...openButtonSx]}
                       onClick={() =>
                         navigate(`/me/assignments/${assignment.id}`)
                       }
