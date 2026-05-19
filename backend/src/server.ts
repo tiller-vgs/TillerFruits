@@ -12,7 +12,13 @@ import {
   fetchAllSubmissionsByCreatorId,
   fetchAssignedSubmissions,
   fetchSingularFileFrontend,
+  fetchSingularSubmission,
+  fetchUserSubmissionForAssignment,
 } from "./services/fileService";
+import {
+  fetchSingularAssignment,
+  fetchRecipientAssignments,
+} from "./services/assignmentService";
 import { getFilePath } from "./utils/getFilePath";
 import afterUploadSending from "./utils/afterUploadSending";
 
@@ -141,8 +147,6 @@ app.get("/api/v1/files/:id", requireLogin, async (req, res) => {
 //for teachers/admins to create new assignments
 app.post("/api/v1/admin/create-assignment", async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-
     const { assignmentTitle, questions } = req.body;
 
     if (!assignmentTitle || !questions) {
@@ -192,17 +196,70 @@ app.get("/api/v1/me/schoolwork", requireLogin, async (req, res) => {
     const userId = req.session.user.id;
     const assignedSubmissions = await fetchAssignedSubmissions(userId);
     const userSubmissions = await fetchAllSubmissionsByCreatorId(userId);
+    const recipientAssignments = await fetchRecipientAssignments(userId);
 
     res.status(200).json({
       success: true,
       message: "Submissions fetched successfully",
-      data: { assignedSubmissions, userSubmissions },
+      data: { assignedSubmissions, userSubmissions, recipientAssignments },
     });
   } catch (error: any) {
     res.status(500).json({
       success: false,
       message: error.message,
     });
+  }
+});
+
+//for assignment page: returns assignment details + user's own submission (if any)
+app.get(
+  "/api/v1/me/assignments/:assignmentId",
+  requireLogin,
+  async (req, res) => {
+    try {
+      const userId = req.session.user.id;
+      const assignmentId = Number(req.params.assignmentId);
+
+      const assignment = await fetchSingularAssignment(assignmentId);
+      if (!assignment) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Assignment not found" });
+      }
+
+      const mySubmission = await fetchUserSubmissionForAssignment(
+        userId,
+        assignmentId,
+      );
+
+      res.status(200).json({
+        success: true,
+        data: { assignment, mySubmission },
+      });
+    } catch (error: any) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  },
+);
+
+//for singular submission page (both my-submissions and other-submissions)
+app.get("/api/v1/submissions/:submissionId", requireLogin, async (req, res) => {
+  try {
+    const submissionId = Number(req.params.submissionId);
+    const submission = await fetchSingularSubmission(submissionId);
+
+    if (!submission) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Submission not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: submission,
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 

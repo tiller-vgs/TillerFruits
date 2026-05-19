@@ -8,6 +8,7 @@ export function toFrontendFile(file: File) {
     originalName: file.originalName,
     displayName: file.displayName,
     extension: file.extension,
+    status: file.status,
     createdAt: file.createdAt,
   };
 }

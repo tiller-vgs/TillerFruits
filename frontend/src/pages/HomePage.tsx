@@ -11,8 +11,12 @@ import FilePreview from "../components/FilePreview";
 import FilePreviewButton from "../components/FilePreviewButton";
 import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
+import { useNavigate, useParams } from "react-router-dom";
 
 function HomePage() {
+  const { id } = useParams<{ id: string }>();
+  const assignmentId = id ? Number(id) : 1;
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [addedFile, setAddedFile] = useState<UploadFileType | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -23,11 +27,14 @@ function HomePage() {
   const fileIsPdf: boolean = addedFile?.type === "application/pdf";
   const file = addedFile?.file;
 
-  // useeffect for resetting addedfile and errormessages if upload was a success
   useEffect(() => {
     if (uploadStatus !== "success") return;
-    setAddedFile(null);
-    setErrorMessage("");
+    if (id) {
+      navigate(`/me/assignments/${id}`);
+    } else {
+      setAddedFile(null);
+      setErrorMessage("");
+    }
   }, [uploadStatus]);
 
   return (
@@ -72,7 +79,7 @@ function HomePage() {
 
               {addedFile && (
                 <SubmitFileButton
-                  assignmentId={1}
+                  assignmentId={assignmentId}
                   addedFile={addedFile}
                   setUploadStatus={setUploadStatus}
                   setErrorMessage={setErrorMessage}

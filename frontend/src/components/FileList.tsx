@@ -45,24 +45,48 @@ function FileList() {
     return <Alert severity="error">{error}</Alert>;
   }
 
+  const newFiles = files.filter((f) => f.status === "new");
+  const sentFiles = files.filter((f) => f.status === "sent");
+
   return (
-    <Box>
-      <Typography variant="h6" fontWeight="medium" gutterBottom>
-        Filer å sende videre ({files.length})
-      </Typography>
-      <Grid container spacing={3} mb={5}>
-        {files.map((file) => (
-          <Grid key={file.id}>
-            <FileCard file={file} />
-          </Grid>
-        ))}
-      </Grid>
+    <Box display="flex" gap={3} alignItems="flex-start">
+      <Box flex={1}>
+        <Typography variant="h6" fontWeight="medium" gutterBottom>
+          Filer å sende videre ({newFiles.length})
+        </Typography>
+        <Grid container spacing={2}>
+          {newFiles.map((file) => (
+            <Grid key={file.id}>
+              <FileCard file={file} />
+            </Grid>
+          ))}
+          {newFiles.length === 0 && (
+            <Typography variant="body2" color="text.secondary" sx={{ pl: 1 }}>
+              Ingen nye filer
+            </Typography>
+          )}
+        </Grid>
+      </Box>
 
-      <Divider sx={{ mb: 3 }} />
+      <Divider orientation="vertical" flexItem />
 
-      <Typography variant="h6" fontWeight="medium" color="text.secondary">
-        Oppgavehistorikk
-      </Typography>
+      <Box flex={1}>
+        <Typography variant="h6" fontWeight="medium" color="text.secondary" gutterBottom>
+          Oppgavehistorikk ({sentFiles.length})
+        </Typography>
+        <Grid container spacing={2}>
+          {sentFiles.map((file) => (
+            <Grid key={file.id}>
+              <FileCard file={file} />
+            </Grid>
+          ))}
+          {sentFiles.length === 0 && (
+            <Typography variant="body2" color="text.secondary" sx={{ pl: 1 }}>
+              Ingen sendte filer ennå
+            </Typography>
+          )}
+        </Grid>
+      </Box>
     </Box>
   );
 }

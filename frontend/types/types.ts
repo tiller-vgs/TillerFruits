@@ -12,6 +12,7 @@ export type FileTypeFromDB = {
   originalName: string;
   displayName: string;
   extension: string;
+  status: "new" | "sent";
   createdAt: string;
 };
 
@@ -20,6 +21,54 @@ export type FileItem = {
   extension: string;
   originalName: string;
   displayName: string;
+};
+
+export type FrontendSubmission = {
+  id: number;
+
+  createdAt: Date;
+
+  assignment: {
+    id: number;
+    title: string;
+
+    questions: {
+      id: number;
+      title: string;
+    }[];
+  };
+
+  reviewers: {
+    anonName: string;
+    completed: boolean;
+  }[];
+
+  file: {
+    id: number;
+    originalName: string;
+    displayName: string;
+    extension: string;
+    createdAt: Date;
+  };
+};
+
+export type FrontendAssignment = {
+  id: number;
+  title: string;
+  questions: {
+    id: number;
+    title: string;
+  }[];
+};
+
+export type RecipientAssignment = {
+  id: number;
+  title: string;
+  questions: {
+    id: number;
+    title: string;
+  }[];
+  hasSubmitted: boolean;
 };
 
 export type UploadStatus = "idle" | "success" | "error" | "loading";

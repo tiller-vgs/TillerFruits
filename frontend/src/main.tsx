@@ -14,6 +14,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import StudentPage from "./pages/StudentPage.tsx";
 import Footer from "./components/Footer.tsx";
 import AssignmentDistribute from "./pages/AssignmentDistribute.tsx";
+import AssignmentPage from "./pages/AssignmentPage.tsx";
+import MySubmissionPage from "./pages/MySubmissionPage.tsx";
+import OtherSubmissionPage from "./pages/OtherSubmissionPage.tsx";
 import TOS from "./pages/TOS.tsx";
 
 const theme = createTheme({
@@ -41,6 +44,9 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/me/assignments/:id/upload" element={<HomePage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/assignment/create-new" element={<AssignmentDistribute />} />
+            <Route path="/me/assignments/:assignmentId" element={<AssignmentPage />} />
+            <Route path="/me/submissions/my-submissions/:submissionID" element={<MySubmissionPage />} />
+            <Route path="/me/submissions/other-submissions/:submissionID" element={<OtherSubmissionPage />} />
           </Route>
         </Routes>
 
